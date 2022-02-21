@@ -1,9 +1,10 @@
 package _CONSULTA;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.Locale;
 import java.util.Scanner;
-
-import clases.Cliente;
 
 public class Consulta {
 
@@ -11,6 +12,22 @@ public class Consulta {
 		
 		// Variables
 		int opcion;
+		Locale españolLocale = new Locale("es", "ES");
+		LocalDate fechaInicial = LocalDate.of(LocalDate.now().getYear(),Month.MARCH,1);
+		
+		//Variables de generacion	
+		int numeroEspecialistas = 3;
+		String [] listaEspecialidad = {"Homeopatia","Quiropraxia"};
+		double [] listaTarifas = {60.00,65.50};
+		ArrayList <String> listaDni = null; //La lista de dni es para acotar el numero de pacientes y asegurar que vuelven a la consulta.
+		String [][] listaClientes = new String [2][];
+		
+		//Variables de registro
+		ArrayList <ArrayList> registroClientes = new ArrayList<ArrayList>();
+		ArrayList [] registroEspecialistas = new ArrayList[numeroEspecialistas];
+		ArrayList <int []> registroVisitas = new ArrayList<int[]>();
+		
+		//Variables de mensajes
 		String opcion_Msj="Seleccione una opción.";
 		String salir_Msj="Gracias por usar el programa.";
 		String errorOpcion_Msj="Esa opción no existe, por favor seleccione una opción válida.";
@@ -23,12 +40,12 @@ public class Consulta {
 			switch(opcion) {
 				case 1://Opcion
 					separador();
-					System.out.println("1");
+					generarEntidades(listaDni);
 					separador();
 					break;
 				case 2://Opcion
 					separador();
-					System.out.println("2");
+					generarAgenda(fechaInicial, listaClientes);
 					separador();
 					break;
 				case 3://Opcion
@@ -100,20 +117,19 @@ public class Consulta {
 		return numero;
 	}
 	
-	public static void generarVisitas() {
+	public static void generarEntidades(ArrayList <String> listaDni) {
 		
-		ArrayList <Cliente> visitasDiarias = new ArrayList<Cliente>();
-		int maxVisitas=15;
-		int minVisitas=10;
-		int visitas=(int)Math.floor(((maxVisitas-minVisitas+1)*Math.random())+minVisitas);
+	}
+	
+	public static void generarAgenda(LocalDate fechaInicial, String [][] clientes) {
+		generarVisitas(clientes);
+	}
+	
+	public static void generarVisitas(String [][] clientes) {
+		registroClientes(clientes);
+	}
+	
+	public static void registroClientes(String [][] clientes) {
 		
-		for (int i=0; i<visitas;i++) {
-			visitasDiarias.add(new Cliente());
-		}
-
-		for(int i=0; i<visitasDiarias.size();i++) {
-			System.out.printf(visitasDiarias.get(i).getApellidos()+", ");
-			System.out.println(visitasDiarias.get(i).getNombre());
-		}
 	}
 }
