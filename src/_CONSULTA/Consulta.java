@@ -2,6 +2,7 @@ package _CONSULTA;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Locale;
 import java.util.Scanner;
@@ -18,12 +19,13 @@ public class Consulta {
 		//Variables de generacion	
 		int numeroEspecialistas = 3;
 		String [] listaEspecialidad = {"Homeopatia","Quiropraxia"};
+		String [] listaMetodoPago = {"Transferencia","Tarjeta","Efectivo"};
 		double [] listaTarifas = {60.00,65.50};
-		ArrayList <String> listaDni = null; //La lista de dni es para acotar el numero de pacientes y asegurar que vuelven a la consulta.
-		String [][] listaClientes = new String [2][];
+		ArrayList <String> listaDni = new ArrayList <String>();
+		ArrayList <String[]> listaClientes = new ArrayList <String[]>(); //
 		
 		//Variables de registro
-		ArrayList <ArrayList> registroClientes = new ArrayList<ArrayList>();
+		ArrayList <String[]> registroClientes = new ArrayList<String[]>();
 		ArrayList [] registroEspecialistas = new ArrayList[numeroEspecialistas];
 		ArrayList <int []> registroVisitas = new ArrayList<int[]>();
 		
@@ -40,7 +42,8 @@ public class Consulta {
 			switch(opcion) {
 				case 1://Opcion
 					separador();
-					generarEntidades(listaDni);
+					generarEntidades(listaClientes, listaDni, listaMetodoPago,listaEspecialidad, 15);
+					imprimirPrueba(listaClientes);
 					separador();
 					break;
 				case 2://Opcion
@@ -116,20 +119,60 @@ public class Consulta {
 		} while (numero<inicio || numero>fin);
 		return numero;
 	}
+	 
 	
-	public static void generarEntidades(ArrayList <String> listaDni) {
+	public static void generarEntidades(ArrayList <String[]> listaClientes, ArrayList <String> listaDni, String [] listaMetodoPago,String [] listaEspecialidad, int nEntidades) {
+		
+		String [] listaNombres = {"Rishbha","Handel","Milind","Pulkita","Arnurna","Mell","Trent","Kalantha","Upravda","Stacy","Kalantha","Lincoln","Ernest","Stamford","Pryderi","Pablo","Fernando","Grace","Fagan","Nesim","Lilah","Mayrah","Madelyn","Barlow","Ilka","Beryl","Onora","Edeline","Stratton","Beryl"};
+		String [] listaApellidos = {"Gladstone","Weeden","Sylvia","Utter","Lebron","Vicente","Weigand","Nelson","Lewallen","Brew","Mccombs","Rhee","William","Vierra","Kegley","Shears","Dann","Sparkle","Habib","Adcock","Sundberg","Elia","Hickok","Huertas", "Hodnett","Higgins","Klos","Junker","Enright"};
+		generarDni(nEntidades, listaDni);
+		for (int i=0; i<nEntidades; i++) {
+			
+			int randomDni = (int)Math.floor((int)(listaDni.size())*Math.random());
+			int randomNom = (int)Math.floor((int)(listaNombres.length)*Math.random());
+			int randomApe = (int)Math.floor((int)(listaApellidos.length)*Math.random());
+			int randomApe2 = (int)Math.floor((int)(listaApellidos.length)*Math.random());
+			int randomEsp = (int)Math.floor((int)(listaEspecialidad.length)*Math.random());
+			int randomMP = (int)Math.floor((int)(listaMetodoPago.length)*Math.random());
+			String [] cliente = {listaDni.remove(randomDni),listaNombres[randomNom],listaApellidos[randomApe]+" "+listaApellidos[randomApe2],listaEspecialidad[randomEsp],listaMetodoPago[randomMP]}; 
+	
+			listaClientes.add(cliente);
+		}
+			
+			
+	}
+	public static void generarDni(int nEntidades, ArrayList <String> listaDni) {
+		String dni = "";
+		for (int i=0; i<nEntidades; i++) {
+			do {
+				dni=generarDatosDni();
+			} while (listaDni.contains(dni));	
+			listaDni.add(dni);
+		}
+	}  
+	
+	public static String generarDatosDni() {
+		int dni = (int)Math.floor((int)100000000*Math.random());
+		int indice = dni % 23;
+		String letras = "TRWAGMYFPDXBNJZSQVHLCKET";
+		return Integer.toString(dni)+letras.toCharArray()[indice];
+	}
+	
+	public static void generarAgenda(LocalDate fechaInicial, ArrayList <String[]> listaClientes) {
+		generarVisitas(listaClientes);
+	}
+	
+	public static void generarVisitas(ArrayList <String[]> listaClientes) {
+		registroClientes(listaClientes);
+	}
+	
+	public static void registroClientes(ArrayList <String[]> listaClientes) {
 		
 	}
 	
-	public static void generarAgenda(LocalDate fechaInicial, String [][] clientes) {
-		generarVisitas(clientes);
-	}
-	
-	public static void generarVisitas(String [][] clientes) {
-		registroClientes(clientes);
-	}
-	
-	public static void registroClientes(String [][] clientes) {
-		
+	public static void imprimirPrueba(ArrayList <String[]> listaClientes) {
+		for(String i [] : listaClientes) {
+			System.out.println(Arrays.toString(i));
+		}
 	}
 }
