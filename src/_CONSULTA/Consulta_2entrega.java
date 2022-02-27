@@ -7,7 +7,7 @@ import java.util.InputMismatchException;
 import java.util.Locale;
 import java.util.Scanner;
 
-public class Consulta {
+public class Consulta_2entrega {
 
 	public static void main(String[] args) {
 		
@@ -25,7 +25,7 @@ public class Consulta {
 		ArrayList <String[]> listaClientes = new ArrayList <String[]>(); //
 		
 		//Variables de registro
-		ArrayList <ArrayList> registroClientes = new ArrayList<ArrayList>();
+		ArrayList <String[]> registroClientes = new ArrayList<String[]>();
 		ArrayList [] registroEspecialistas = new ArrayList[numeroEspecialistas];
 		ArrayList <int []> registroVisitas = new ArrayList<int[]>();
 		
@@ -43,12 +43,12 @@ public class Consulta {
 				case 1://Opcion
 					separador();
 					generarEntidades(listaClientes, listaDni, listaMetodoPago,listaEspecialidad, 15);
-					//imprimirPrueba(listaClientes);
+					imprimirPrueba(listaClientes);
 					separador();
 					break;
 				case 2://Opcion
 					separador();
-					generarAgenda(fechaInicial, listaClientes, registroClientes);
+					generarAgenda(fechaInicial, listaClientes);
 					separador();
 					break;
 				case 3://Opcion
@@ -87,8 +87,7 @@ public class Consulta {
 	}
 	
 	//==============METODOS==============//
-	
-	/*Métodos de interfaz de usuario*/
+
 	public static void mostrarMenu() {//Muestra las opciones del menu
 		System.out.println ("Menu:\n");
 		System.out.println ("1. Opción 1");
@@ -99,9 +98,11 @@ public class Consulta {
 		System.out.println ("6. Opción 6");
 		System.out.println ("9. Salir \n");
 	}
+	
 	public static void separador() {
 		System.out.println("\n=======================================\n");
 	}
+	
 	public static int pedirNum (int inicio, int fin, String mensaje) {
 		int numero=0;
 		Scanner sc;
@@ -118,8 +119,8 @@ public class Consulta {
 		} while (numero<inicio || numero>fin);
 		return numero;
 	}
+	 
 	
-	/*Modulo generarEntidades*/
 	public static void generarEntidades(ArrayList <String[]> listaClientes, ArrayList <String> listaDni, String [] listaMetodoPago,String [] listaEspecialidad, int nEntidades) {
 		
 		String [] listaNombres = {"Rishbha","Handel","Milind","Pulkita","Yesus","Mell","Trent","Kalantha","Upravda","Stacy","Kalantha","Lincoln","Ernest","Stamford","Pryderi","Pablo","Fernando","Grace","Jaun","Nesim","Lilah","Mayrah","Madelyn","Barlow","Ilka","Beryl","Onora","Edeline","Stratton","Beryl"};
@@ -140,25 +141,6 @@ public class Consulta {
 			
 		
 	}
-	public static void generarEntidades(ArrayList [] registroEspecialistas, String [] listaEspecialidad, int nEntidades) {  //ToDo --Hacer que uno de ellos tenga dos especialidades y no se repitan.
-		String [] listaNombres = {"Rishbha","Handel","Milind","Pulkita","Yesus","Mell","Trent","Kalantha","Upravda","Stacy","Kalantha","Lincoln","Ernest","Stamford","Pryderi","Pablo","Fernando","Grace","Jaun","Nesim","Lilah","Mayrah","Madelyn","Barlow","Ilka","Beryl","Onora","Edeline","Stratton","Beryl"};
-		String [] listaApellidos = {"Gladstone","Weeden","Sylvia","Utter","Lebron","Vicente","Weigand","Nelson","Lewallen","Brew","Mccombs","Rhee","William","Vierra","Kegley","Shears","Dann","Sparkle","Habib","Adcock","Sundberg","Elia","Hickok","Huertas", "Hodnett","Higgins","Klos","Junker","Enright"};
-		String [] dias = {"lunes", "martes","miercoles","jueves","viernes","sabado","domingo"};
-		for (int i=0; i<nEntidades; i++) {
-			int randomNom = (int)Math.floor((int)(listaNombres.length)*Math.random());
-			int randomApe = (int)Math.floor((int)(listaApellidos.length)*Math.random());
-			int randomApe2 = (int)Math.floor((int)(listaApellidos.length)*Math.random());
-			int randomEsp = (int)Math.floor((int)(listaEspecialidad.length)*Math.random());
-			int randomDia = (int)Math.floor((int)(dias.length)*Math.random());
-			ArrayList especialista = new ArrayList();
-			especialista.add(listaNombres[randomNom]);
-			especialista.add(listaApellidos[randomApe]);
-			especialista.add(listaApellidos[randomApe2]);
-			especialista.add(listaEspecialidad[randomEsp]);
-			especialista.add(dias[randomDia]);
-			registroEspecialistas[i].add(especialista);
-		}
-	}
 	public static void generarDni(int nEntidades, ArrayList <String> listaDni) {
 		String dni = "";
 		for (int i=0; i<nEntidades; i++) {
@@ -167,7 +149,8 @@ public class Consulta {
 			} while (listaDni.contains(dni));	
 			listaDni.add(dni);
 		}
-	}
+	}  
+	
 	public static String generarDatosDni() {
 		int dni = (int)Math.floor((int)100000000*Math.random());
 		int indice = dni % 23;
@@ -175,37 +158,21 @@ public class Consulta {
 		return String.format("%08d",dni)+letras.toCharArray()[indice];
 	}
 	
-	/*Modulo generarAgenda*/
-	public static void generarAgenda(LocalDate fechaInicial, ArrayList <String[]> listaClientes, ArrayList <ArrayList> registroClientes) {	//ToDo
-		generarVisitas(listaClientes, registroClientes);
+	public static void generarAgenda(LocalDate fechaInicial, ArrayList <String[]> listaClientes) {
+		generarVisitas(listaClientes);
 	}
-	public static void generarDia(){ //ToDo
-		
+	
+	public static void generarVisitas(ArrayList <String[]> listaClientes) {
+		registroClientes(listaClientes);
 	}
-	public static void diaLibre() {	//ToDo
+	
+	public static void registroClientes(ArrayList <String[]> listaClientes) {
 		
 	}
 	
-	/*Modulo generarVisitas*/
-	public static void generarVisitas(ArrayList <String[]> listaClientes, ArrayList <ArrayList> registroClientes) { //ToDo
-		registroClientes(listaClientes, registroClientes);
-		registroVisita(listaClientes, registroClientes);
-	}
-	public static void registroClientes(ArrayList <String[]> listaClientes, ArrayList <ArrayList> registroClientes) { //ToDo
-		
-	}
-	public static void registroVisita(ArrayList <String[]> listaClientes, ArrayList <ArrayList> 
-	registroClientes) { //ToDo
-		
-	}
-	
-	/*Modulo de consultaDatos*/
 	public static void imprimirPrueba(ArrayList <String[]> listaClientes) {
 		for(String i [] : listaClientes) {
 			System.out.println(Arrays.toString(i));
 		}
-	}  //Metodo para testeo de clientes.
-	public static void imprimirVisitas(ArrayList <int []> registroVisitas) {  //ToDo
-		//Habría que crear un método ya mostrando valores formateados y que se entiendan no con enteros.
 	}
 }
