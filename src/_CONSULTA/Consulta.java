@@ -1,6 +1,6 @@
 package _CONSULTA;
-import java.time.LocalDate;
-import java.time.Month;
+import java.time.*;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.InputMismatchException;
@@ -13,16 +13,19 @@ public class Consulta {
 		
 		// Variables
 		int opcion;
-		Locale españolLocale = new Locale("es", "ES");
+		Locale espaniol = new Locale("es", "ES");
 		LocalDate fechaInicial = LocalDate.of(LocalDate.now().getYear(),Month.MARCH,1);
+		LocalDate fechaFinal = LocalDate.of(LocalDate.now().getYear(),Month.APRIL,30);
 		
 		//Variables de generacion	
 		int numeroEspecialistas = 3;
-		String [] listaEspecialidad = {"Homeopatia","Quiropraxia"};
+		String [] listaEspecialidad = {"Homeopatia","Quiropraxia","Sin especialidad"};
 		String [] listaMetodoPago = {"Transferencia","Tarjeta","Efectivo"};
 		double [] listaTarifas = {60.00,65.50};
 		ArrayList <String> listaDni = new ArrayList <String>();
-		ArrayList <String[]> listaClientes = new ArrayList <String[]>(); //
+		ArrayList <String[]> listaClientes = new ArrayList <String[]>();
+		ArrayList <Integer> festivos = new ArrayList <Integer>();
+		
 		
 		//Variables de registro
 		ArrayList <ArrayList> registroClientes = new ArrayList<ArrayList>();
@@ -30,9 +33,9 @@ public class Consulta {
 		ArrayList <int []> registroVisitas = new ArrayList<int[]>();
 		
 		//Variables de mensajes
-		String opcion_Msj="Seleccione una opción.";
+		String opcion_Msj="Seleccione una opcion.";
 		String salir_Msj="Gracias por usar el programa.";
-		String errorOpcion_Msj="Esa opción no existe, por favor seleccione una opción válida.";
+		String errorOpcion_Msj="Esa opcion no existe, por favor seleccione una opcion valida.";
 		
 		//Menu
 		
@@ -43,12 +46,15 @@ public class Consulta {
 				case 1://Opcion
 					separador();
 					generarEntidades(listaClientes, listaDni, listaMetodoPago,listaEspecialidad, 15);
+					generarEntidades(registroEspecialistas,listaEspecialidad, numeroEspecialistas);
+					generarFestivos(fechaInicial,festivos);
+					imprimirPrueba(registroEspecialistas);
+					generarAgenda(fechaInicial,fechaFinal, listaClientes, registroClientes, registroEspecialistas, festivos);
 					//imprimirPrueba(listaClientes);
 					separador();
 					break;
 				case 2://Opcion
 					separador();
-					generarAgenda(fechaInicial, listaClientes, registroClientes);
 					separador();
 					break;
 				case 3://Opcion
@@ -88,15 +94,15 @@ public class Consulta {
 	
 	//==============METODOS==============//
 	
-	/*Métodos de interfaz de usuario*/
+	/*Mï¿½todos de interfaz de usuario*/
 	public static void mostrarMenu() {//Muestra las opciones del menu
 		System.out.println ("Menu:\n");
-		System.out.println ("1. Opción 1");
-		System.out.println ("2. Opción 2");
-		System.out.println ("3. Opción 3");
-		System.out.println ("4. Opción 4");
-		System.out.println ("5. Opción 5");
-		System.out.println ("6. Opción 6");
+		System.out.println ("1. Opcion 1");
+		System.out.println ("2. Opcion 2");
+		System.out.println ("3. Opcion 3");
+		System.out.println ("4. Opcion 4");
+		System.out.println ("5. Opcion 5");
+		System.out.println ("6. Opcion 6");
 		System.out.println ("9. Salir \n");
 	}
 	public static void separador() {
@@ -112,7 +118,7 @@ public class Consulta {
 				numero = sc.nextInt();
 						
 			} catch (InputMismatchException | NumberFormatException ex){
-				System.err.println("\nIntroduzca un número no un carácter, por favor.");
+				System.err.println("\nIntroduzca un numero no un caracter, por favor.");
 				sc.next();
 			}
 		} while (numero<inicio || numero>fin);
@@ -143,20 +149,39 @@ public class Consulta {
 	public static void generarEntidades(ArrayList [] registroEspecialistas, String [] listaEspecialidad, int nEntidades) {  //ToDo --Hacer que uno de ellos tenga dos especialidades y no se repitan.
 		String [] listaNombres = {"Rishbha","Handel","Milind","Pulkita","Yesus","Mell","Trent","Kalantha","Upravda","Stacy","Kalantha","Lincoln","Ernest","Stamford","Pryderi","Pablo","Fernando","Grace","Jaun","Nesim","Lilah","Mayrah","Madelyn","Barlow","Ilka","Beryl","Onora","Edeline","Stratton","Beryl"};
 		String [] listaApellidos = {"Gladstone","Weeden","Sylvia","Utter","Lebron","Vicente","Weigand","Nelson","Lewallen","Brew","Mccombs","Rhee","William","Vierra","Kegley","Shears","Dann","Sparkle","Habib","Adcock","Sundberg","Elia","Hickok","Huertas", "Hodnett","Higgins","Klos","Junker","Enright"};
-		String [] dias = {"lunes", "martes","miercoles","jueves","viernes","sabado","domingo"};
+		String [] dias = {"lunes", "martes","miercoles","jueves","viernes"};
+		
 		for (int i=0; i<nEntidades; i++) {
-			int randomNom = (int)Math.floor((int)(listaNombres.length)*Math.random());
-			int randomApe = (int)Math.floor((int)(listaApellidos.length)*Math.random());
-			int randomApe2 = (int)Math.floor((int)(listaApellidos.length)*Math.random());
-			int randomEsp = (int)Math.floor((int)(listaEspecialidad.length)*Math.random());
-			int randomDia = (int)Math.floor((int)(dias.length)*Math.random());
-			ArrayList especialista = new ArrayList();
-			especialista.add(listaNombres[randomNom]);
-			especialista.add(listaApellidos[randomApe]);
-			especialista.add(listaApellidos[randomApe2]);
-			especialista.add(listaEspecialidad[randomEsp]);
-			especialista.add(dias[randomDia]);
-			registroEspecialistas[i].add(especialista);
+			if(i<2){
+				int randomNom = (int)Math.floor((int)(listaNombres.length)*Math.random());
+				int randomApe = (int)Math.floor((int)(listaApellidos.length)*Math.random());
+				int randomApe2 = (int)Math.floor((int)(listaApellidos.length)*Math.random());
+				int randomEsp = (int)Math.floor((int)(listaEspecialidad.length-1)*Math.random());
+				int randomDia = (int)Math.floor((int)(dias.length)*Math.random());
+				ArrayList especialista = new ArrayList();
+				especialista.add(listaNombres[randomNom]);
+				especialista.add(listaApellidos[randomApe]);
+				especialista.add(listaApellidos[randomApe2]);
+				especialista.add(randomEsp);
+				especialista.add(2);
+				especialista.add(randomDia);
+				registroEspecialistas[i]=new ArrayList<>();
+				registroEspecialistas[i] = especialista;
+			}else{
+				int randomNom = (int)Math.floor((int)(listaNombres.length)*Math.random());
+				int randomApe = (int)Math.floor((int)(listaApellidos.length)*Math.random());
+				int randomApe2 = (int)Math.floor((int)(listaApellidos.length)*Math.random());
+				int randomDia = (int)Math.floor((int)(dias.length)*Math.random());
+				ArrayList especialista = new ArrayList();
+				especialista.add(listaNombres[randomNom]);
+				especialista.add(listaApellidos[randomApe]);
+				especialista.add(listaApellidos[randomApe2]);
+				especialista.add(1);
+				especialista.add(0);
+				especialista.add(randomDia);
+				registroEspecialistas[i]=new ArrayList<>();
+				registroEspecialistas[i] = especialista;
+			}
 		}
 	}
 	public static void generarDni(int nEntidades, ArrayList <String> listaDni) {
@@ -175,15 +200,43 @@ public class Consulta {
 		return String.format("%08d",dni)+letras.toCharArray()[indice];
 	}
 	
+	public static void generarFestivos(LocalDate fechaInicial, ArrayList <Integer> festivos) {
+		LocalDate feria = LocalDate.of(LocalDate.now().getYear(), 4, 13);
+		int feriaDays = (int) ChronoUnit.DAYS.between(fechaInicial, feria);
+		festivos.add(0);
+		festivos.add(feriaDays);
+		festivos.add(feriaDays+1);
+	}
+	
 	/*Modulo generarAgenda*/
-	public static void generarAgenda(LocalDate fechaInicial, ArrayList <String[]> listaClientes, ArrayList <ArrayList> registroClientes) {	//ToDo
-		generarVisitas(listaClientes, registroClientes);
+	public static void generarAgenda(LocalDate fechaInicial, LocalDate fechaFinal, ArrayList <String[]> listaClientes, ArrayList <ArrayList> registroClientes,  ArrayList [] registroEspecialistas, ArrayList <Integer> festivos) {	//ToDo
+		int periodoConsultas = ((int)ChronoUnit.DAYS.between(fechaInicial, fechaFinal))+1;
+		System.out.println(periodoConsultas);
+		for (int i=0; i<periodoConsultas; i++) {
+			generarDia(fechaInicial, listaClientes, registroClientes, registroEspecialistas, festivos, i);
+			System.out.println(" ");
+		}
 	}
-	public static void generarDia(){ //ToDo
-		
+	public static void generarDia(LocalDate fechaInicial, ArrayList <String[]> listaClientes, ArrayList <ArrayList> registroClientes,  ArrayList [] registroEspecialistas, ArrayList <Integer> festivos, int fecha){
+
+		if (!festivos.contains(fecha)) {
+			for (int i=0; i<registroEspecialistas.length; i++) {
+				if(!diaLibre(registroEspecialistas[i],fechaInicial,fecha)) {
+					System.out.println("se puede registrar");
+					//generarVisitas(listaClientes, registroClientes);
+				} else {System.out.println("No se puede");}
+			}
+		}
 	}
-	public static void diaLibre() {	//ToDo
-		
+	
+	public static boolean diaLibre(ArrayList registroEspecialista, LocalDate fechaInicial, int fecha) {
+		LocalDate dia = fechaInicial.plusDays(fecha-1);
+		int diaSem=dia.getDayOfWeek().ordinal();
+		if ((int)registroEspecialista.get(5)==diaSem||diaSem>4) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	/*Modulo generarVisitas*/
@@ -205,7 +258,13 @@ public class Consulta {
 			System.out.println(Arrays.toString(i));
 		}
 	}  //Metodo para testeo de clientes.
+	
+	public static void imprimirPrueba(ArrayList [] listaEspecialistas) {
+		for(ArrayList i : listaEspecialistas) {
+			System.out.println(i);
+		}
+	}  //Metodo para testeo de especialistas.
 	public static void imprimirVisitas(ArrayList <int []> registroVisitas) {  //ToDo
-		//Habría que crear un método ya mostrando valores formateados y que se entiendan no con enteros.
+		//Habrï¿½a que crear un mï¿½todo ya mostrando valores formateados y que se entiendan no con enteros.
 	}
 }
