@@ -1,5 +1,6 @@
 package _CONSULTA;
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,68 +12,77 @@ public class Consulta {
 
 	public static void main(String[] args) {
 		
-            // Variables
-            int opcion;
-            Locale espaniol = new Locale("es", "ES"); //Para posterior formateo de fechas
-            LocalDate fechaInicial = LocalDate.of(LocalDate.now().getYear(),Month.MARCH,1);
-            LocalDate fechaFinal = LocalDate.of(LocalDate.now().getYear(),Month.APRIL,30);
-            //Variables de generacion	
-            int numeroEspecialistas = 3;
-            String [] listaEspecialidad = {"Homeopatia","Quiropraxia","Sin especialidad"};
-            String [] listaMetodoPago = {"Transferencia","Tarjeta","Efectivo"};
-            double [] listaTarifas = {60.00,65.50};
-            ArrayList <String> listaDni = new ArrayList <String>();
-            ArrayList <String[]> listaClientes = new ArrayList <String[]>();
-            ArrayList <Integer> festivos = new ArrayList <Integer>();
-            //Variables de registro
-            ArrayList <ArrayList> registroClientes = new ArrayList<ArrayList>();
-            ArrayList [] registroEspecialistas = new ArrayList[numeroEspecialistas];
-            ArrayList<int[]> registroVisitas = new ArrayList<int[]>();
-            //Variables de mensajes
-            String opcion_Msj="Seleccione una opcion.";
-            String salir_Msj="Gracias por usar el programa.";
-            String errorOpcion_Msj="Esa opcion no existe, por favor seleccione una opcion valida.";
-            //Menu
-            do {
-		mostrarMenu();
-		opcion = pedirNum(0, 9, opcion_Msj);
-		switch(opcion) {
-                    case 1://Opcion
-			separador();
-			generarEntidades(listaClientes, listaDni, 600);
-			generarEntidades(registroEspecialistas,listaEspecialidad, numeroEspecialistas);
-			generarFestivos(fechaInicial,festivos);
-			generarAgenda(fechaInicial, fechaFinal, listaClientes, registroClientes, registroEspecialistas, registroVisitas, festivos, listaMetodoPago);
-			separador();
-			break;
-                    case 2://Opcion imprimir pruebas
-			separador();
-                        //imprimirPruebas(listaClientes);
-			imprimirPrueba(registroEspecialistas);
-			//imprimirClientes(registroClientes);
-			//imprimirVisitasPrueba(registroVisitas);
-			separador();
-			break;
-                    case 3://Opcion posteriores consultas
-			separador();
-                        imprimirVisitas(registroVisitas,registroClientes,registroEspecialistas,listaEspecialidad,listaMetodoPago,listaTarifas);
-			facturacion(registroVisitas,registroClientes,listaTarifas);
-                        //System.out.println("Seccion en proceso. Pruebe con otras.");
-			separador();
-			break;
-                    case 9://Exit Option
-			separador();
-			System.out.println(salir_Msj);
-			separador();
-			break;
-                    default://Otra opcion error
-			separador();
-			System.out.println(errorOpcion_Msj);
-			separador();
-			break;
+		// Variables
+		int opcion;
+		Locale espaniol = new Locale("es", "ES"); //Para posterior formateo de fechas
+		LocalDate fechaInicial = LocalDate.of(LocalDate.now().getYear(),Month.MARCH,1);
+		LocalDate fechaFinal = LocalDate.of(LocalDate.now().getYear(),Month.APRIL,30);
+            
+		//Variables de generacion	
+		int numeroEspecialistas = 3;
+		int numeroClientes = 600;
+		String [] listaEspecialidad = {"Homeopatia","Quiropraxia","Sin especialidad"};
+		String [] listaMetodoPago = {"Transferencia","Tarjeta","Efectivo"};
+		double [] listaTarifas = {60.00,65.50};
+		ArrayList <String> listaDni = new ArrayList <String>();
+		ArrayList <String[]> listaClientes = new ArrayList <String[]>();
+		ArrayList <Integer> festivos = new ArrayList <Integer>();
+            
+		//Variables de registro
+        ArrayList <ArrayList> registroClientes = new ArrayList<ArrayList>();
+        ArrayList [] registroEspecialistas = new ArrayList[numeroEspecialistas];
+        ArrayList<int[]> registroVisitas = new ArrayList<int[]>();
+            
+        //Variables de mensajes
+        String opcion_Msj="Seleccione una opcion.";
+        String salir_Msj="Gracias por usar el programa.";
+        String errorOpcion_Msj="Esa opcion no existe, por favor seleccione una opcion valida.";
+            
+        //Menu
+        
+        do {
+        	mostrarMenu();
+            opcion = pedirNum(0, 9, opcion_Msj);
+            switch(opcion) {
+            	case 1://Opcion
+           			separador();
+           			generarEntidades(listaClientes, listaDni, numeroClientes);
+           			generarEntidades(registroEspecialistas,listaEspecialidad, numeroEspecialistas);
+           			generarFestivos(fechaInicial,festivos);
+           			generarAgenda(fechaInicial, fechaFinal, listaClientes, registroClientes, registroEspecialistas, registroVisitas, festivos, listaMetodoPago);
+           			separador();
+           			break;
+           		case 2://Opcion imprimir pruebas
+           			separador();
+           			//imprimirPruebas(listaClientes);
+           			//imprimirPrueba(registroEspecialistas);
+           			//imprimirClientes(registroClientes);
+           			//imprimirVisitasPrueba(registroVisitas);
+           			//imprimirPablo(registroVisitas, registroClientes, registroEspecialistas, listaEspecialidad, listaMetodoPago, listaTarifas);
+           			imprimirVisitas(fechaInicial, registroVisitas, registroClientes, registroEspecialistas, listaEspecialidad, listaMetodoPago);
+            		separador();
+            		break;
+            	case 3://Opcion posteriores consultas
+            		separador();
+            		//imprimirVisitas(registroVisitas,registroClientes,registroEspecialistas,listaEspecialidad,listaMetodoPago,listaTarifas);
+            		//facturacion(registroVisitas,registroClientes,listaTarifas);
+            		imprimirFacturacion(registroVisitas, registroClientes,listaMetodoPago, listaTarifas, fechaInicial, fechaFinal);
+            		//System.out.println("Seccion en proceso. Pruebe con otras.");
+            		separador();
+            		break;
+            	case 9://Exit Option
+            		separador();
+            		System.out.println(salir_Msj);
+            		separador();
+            		break;
+            	default://Otra opcion error
+            		separador();
+            		System.out.println(errorOpcion_Msj);
+            		separador();
+            		break;
+            }
+        } while (opcion != 9);
 		}
-            } while (opcion != 9);
-	}
 	
 	//==============METODOS==============//
 	
@@ -85,7 +95,7 @@ public class Consulta {
             System.out.println ("9. Salir \n");
 	}
 	public static void separador() {
-            System.out.println("\n=======================================\n");
+            System.out.println("\n===========================================\n");
 	}
 	public static int pedirNum (int inicio, int fin, String mensaje) {
             int numero=0;
@@ -257,10 +267,10 @@ public class Consulta {
 		int [] visita = {idCliente,(int)cliente.get(4),(int)cliente.get(3),(int)cliente.get(3),tipoVisita, fecha};
 		registroVisitas.add(visita);
 	}
-        public static int generarUrgencia(){
-            int urgencia=(int)Math.floor((int)(1-0)*Math.random());
-            return urgencia;
-        }
+    public static int generarUrgencia(){
+    	int urgencia=(int)Math.floor((int)48*Math.random());
+        return (urgencia==0)?1:0;
+    }
 	/*Modulo de consultaDatos*/
 	public static void imprimirPruebas(ArrayList <String[]> listaClientes) { //Metodo para testeo bolsa de clientes
 		for(String i [] : listaClientes) {
@@ -288,9 +298,58 @@ public class Consulta {
 		System.out.println("");
             }
 	}
-	public static void imprimirVisitas(ArrayList <int[]> registroVisitas,ArrayList <ArrayList> registroClientes,ArrayList [] registroEspecialistas,String [] listaEspecialidad,String [] listaMetodoPago,double [] listaTarifas) {  //ToDo
-            //Habria que crear un metodo ya mostrando valores formateados y que se entiendan no con enteros. Borra los de prueba conforme los actualices.
-            /*ArrayList de array Visitas(numvisita,fecha,nombre especialista,especialidad,idcliente,precio,metodopago,urgencia)*/
+	public static void imprimirVisitas(LocalDate fechaInicio,ArrayList <int[]> registroVisitas,ArrayList <ArrayList> registroClientes,ArrayList [] registroEspecialistas,String [] listaEspecialidad,String [] listaMetodoPago) {
+		DateTimeFormatter shortFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		for (int i = 0; i<registroVisitas.size(); i++) {
+	    	LocalDate fecha=fechaInicio.plusDays(registroVisitas.get(i)[5]);
+	    	int idCliente = registroVisitas.get(i)[0];
+	    	String urgencia = (registroVisitas.get(i)[4]==1)?"Si":"No";
+	    	System.out.println("Visita:"+String.format("%04d",i)+" Dia:"+fecha.format(shortFormat)+" Especialista:"+String.format("%-20s", registroEspecialistas[registroVisitas.get(i)[1]].get(2)+", "+registroEspecialistas[registroVisitas.get(i)[1]].get(1))+"Rama:"+String.format("%-13s", listaEspecialidad[registroVisitas.get(i)[2]])+"Cliente: "+String.format("%04d", idCliente)+" FCobro:"+String.format("%-17s", listaMetodoPago[(int)registroClientes.get(idCliente).get(5)])+"Urgencia:"+urgencia);
+	    }
+	}
+	public static void imprimirFacturacion(ArrayList <int[]> registroVisitas,ArrayList <ArrayList> registroClientes, String [] listaMetodoPago, double [] listaTarifas, LocalDate fechaInicial, LocalDate fechaFinal) {
+		DateTimeFormatter shortFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		double cobroUrgencia = 1.20;
+    	double metodo1 = 0;
+    	double metodo2 = 0;
+    	double metodo3 = 0;
+		for (int i = 0; i<registroVisitas.size(); i++) {
+	    	int idCliente = registroVisitas.get(i)[0];
+	    		switch((int)registroClientes.get(idCliente).get(5)) {
+	    		case 0:
+	    			metodo1+=sumTarifa(listaTarifas,registroVisitas.get(i),cobroUrgencia);
+	    			break;
+	    		case 1:
+	    			metodo2+=sumTarifa(listaTarifas,registroVisitas.get(i),cobroUrgencia);
+	    			break;
+	    		case 2:
+	    			metodo3+=sumTarifa(listaTarifas,registroVisitas.get(i),cobroUrgencia);
+	    			break;
+	    		}
+	    }
+		System.out.println("FACTURACION PERIODO "+fechaInicial.format(shortFormat)+" - "+fechaFinal.format(shortFormat));
+		separador();
+		System.out.println(String.format("%-33s","Efectivo:")+String.format("%,.2f", metodo3)+"€");
+    	System.out.println(String.format("%-33s","Tarjeta:")+String.format("%,.2f", metodo2)+"€");
+    	System.out.println(String.format("%-33s","Transferencia:")+String.format("%,.2f", metodo1)+"€");
+    	separador();
+    	System.out.println(String.format("%-33s", "TOTAL:")+String.format("%,.2f", metodo1+metodo2+metodo3)+"€");
+	 }
+	
+	public static double sumTarifa (double [] listaTarifas, int[] registroVisita, double cobroUrgencia) {
+		double sumTarifa = 0;
+		if(!(registroVisita[4]==0)) {
+			sumTarifa+=listaTarifas[registroVisita[2]];
+		} else {
+			sumTarifa+=(listaTarifas[registroVisita[2]])*cobroUrgencia;
+		}
+		return sumTarifa;
+	}
+}
+	
+
+	
+	/*public static void imprimirPablo(ArrayList <int[]> registroVisitas,ArrayList <ArrayList> registroClientes,ArrayList [] registroEspecialistas,String [] listaEspecialidad,String [] listaMetodoPago,double [] listaTarifas) {  //ToDo
             ArrayList <ArrayList> Visitas=new ArrayList();
             ArrayList visita=new ArrayList();
             //for(int i=0;i<registroVisitas.size();i++){//for para generar la lista con todas las visitas,se desmadra al activarlo
@@ -351,14 +410,14 @@ public class Consulta {
                     visita.add(urgencia);
                 }
                 Visitas.add(visita);
-            //}
+            }
             for(ArrayList v:Visitas){
                 System.out.println(v.toString());
                 }
                 System.out.println("");
             
         }
-        
+}
         public static void facturacion(ArrayList <int[]> registroVisitas,ArrayList <ArrayList> registroClientes,double [] listaTarifas){
             double efectivo=0;
             double tarjeta=0;
@@ -395,5 +454,5 @@ public class Consulta {
                         + "Tarjeta: "+tarjeta+"\n"
                         + "Transferencia: "+transferencia+"\n"
                         + "Total: "+total);
-        }
-}
+        }*/
+
