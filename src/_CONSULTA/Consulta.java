@@ -52,22 +52,14 @@ public class Consulta {
            			generarAgenda(fechaInicial, fechaFinal, listaClientes, registroClientes, registroEspecialistas, registroVisitas, festivos, listaMetodoPago);
            			separador();
            			break;
-           		case 2://Opcion imprimir pruebas
+           		case 2://Opcion imprimir visitas
            			separador();
-           			//imprimirPruebas(listaClientes);
-           			//imprimirPrueba(registroEspecialistas);
-           			//imprimirClientes(registroClientes);
-           			//imprimirVisitasPrueba(registroVisitas);
-           			//imprimirPablo(registroVisitas, registroClientes, registroEspecialistas, listaEspecialidad, listaMetodoPago, listaTarifas);
            			imprimirVisitas(fechaInicial, registroVisitas, registroClientes, registroEspecialistas, listaEspecialidad, listaMetodoPago);
             		separador();
             		break;
-            	case 3://Opcion posteriores consultas
+            	case 3://Opcion facturacion
             		separador();
-            		//imprimirVisitas(registroVisitas,registroClientes,registroEspecialistas,listaEspecialidad,listaMetodoPago,listaTarifas);
-            		//facturacion(registroVisitas,registroClientes,listaTarifas);
             		imprimirFacturacion(registroVisitas, registroClientes,listaMetodoPago, listaTarifas, fechaInicial, fechaFinal);
-            		//System.out.println("Seccion en proceso. Pruebe con otras.");
             		separador();
             		break;
             	case 9://Exit Option
@@ -90,8 +82,8 @@ public class Consulta {
 	public static void mostrarMenu() {//Muestra las opciones del menu
             System.out.println ("Menu:\n");
             System.out.println ("1. Generación de consultas");
-            System.out.println ("2. Imprimir pruebas");
-            System.out.println ("3. Posteriores consultas (en proceso)");
+            System.out.println ("2. Imprimir visitas");
+            System.out.println ("3. Facturación periodo generado");
             System.out.println ("9. Salir \n");
 	}
 	public static void separador() {
@@ -272,32 +264,7 @@ public class Consulta {
         return (urgencia==0)?1:0;
     }
 	/*Modulo de consultaDatos*/
-	public static void imprimirPruebas(ArrayList <String[]> listaClientes) { //Metodo para testeo bolsa de clientes
-		for(String i [] : listaClientes) {
-			System.out.println(Arrays.toString(i));
-		}
-              
-	}
-	public static void imprimirPrueba(ArrayList [] listaEspecialistas) { //Metodo para testeo de especialistas.
-		for(ArrayList i : listaEspecialistas) {
-			System.out.println(i.toString());
-		}
-	}  
-	public static void imprimirClientes(ArrayList <ArrayList> registroClientes) { //Metodo para testeo registro de clientes
-		System.out.println(registroClientes.size());
-		for(ArrayList i : registroClientes) {
-				System.out.println(i);
-		}
-	}
-	public static void imprimirVisitasPrueba(ArrayList <int[]> registroVisitas) { //Metodo para testeo registro de visitas
-            System.out.println(registroVisitas.size());
-            for(int[] i : registroVisitas) {
-		for(int j : i) {
-                    System.out.print(j+" ");
-		}
-		System.out.println("");
-            }
-	}
+
 	public static void imprimirVisitas(LocalDate fechaInicio,ArrayList <int[]> registroVisitas,ArrayList <ArrayList> registroClientes,ArrayList [] registroEspecialistas,String [] listaEspecialidad,String [] listaMetodoPago) {
 		DateTimeFormatter shortFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		for (int i = 0; i<registroVisitas.size(); i++) {
@@ -346,113 +313,3 @@ public class Consulta {
 		return sumTarifa;
 	}
 }
-	
-
-	
-	/*public static void imprimirPablo(ArrayList <int[]> registroVisitas,ArrayList <ArrayList> registroClientes,ArrayList [] registroEspecialistas,String [] listaEspecialidad,String [] listaMetodoPago,double [] listaTarifas) {  //ToDo
-            ArrayList <ArrayList> Visitas=new ArrayList();
-            ArrayList visita=new ArrayList();
-            //for(int i=0;i<registroVisitas.size();i++){//for para generar la lista con todas las visitas,se desmadra al activarlo
-                int idvisita=3;//i
-                visita.add(idvisita);
-                int [] id=registroVisitas.get(3);//i
-                int fecha=id[5];
-                visita.add(fecha);
-                int [] especialista=registroVisitas.get(3);//i
-                if(especialista[1]==0){//controlamos que dependiendo del numero que salga es un especialista e introducimos el nombre del especialista y de la especialidad correspondiente
-                    ArrayList <String> espe=registroEspecialistas[0];
-                    String especialistas=espe.get(0);
-                    String especialidad=espe.get(2);
-                    visita.add(especialistas);
-                visita.add(especialidad);
-                }else if(especialista[1]==1){
-                    ArrayList <String> espe=registroEspecialistas[1];
-                    String especialistas=espe.get(0);
-                    String especialidad=espe.get(2);
-                    visita.add(especialistas);
-                    visita.add(especialidad);
-                }else{
-                    ArrayList <String> espe=registroEspecialistas[2];
-                    String especialistas=espe.get(0);
-                    visita.add(especialistas);
-                    if(especialista[2]==0){//controlamos el tercer especialista que tiene 2 especialidades
-                        String especialidad=espe.get(2);
-                        visita.add(especialidad);
-                    }else{
-                        String especialidad=espe.get(3);
-                        visita.add(especialidad);
-                    }
-                }
-                int idcliente= id[0];
-                visita.add(idcliente);
-                if(id[3]==0){//controlamos que tarifa paga dependiendo del numero que aparezca e introducimos el digito de la tarifa
-                    double tarifa=listaTarifas[0];
-                    visita.add(tarifa);
-                }else{
-                    double tarifa=listaTarifas[1];
-                    visita.add(tarifa);
-                }
-                if((int)registroClientes.get(3).get(5)==0){//i en el primer get,controlamos que metodo de pago utiliza dependiendo del numero que aparezca e introducimos el nombre del pago
-                    String pago=listaMetodoPago[0];
-                    visita.add(pago);
-                }else if((int)registroClientes.get(0).get(5)==1){
-                    String pago=listaMetodoPago[1];
-                    visita.add(pago);
-                }else{
-                    String pago=listaMetodoPago[2];
-                    visita.add(pago);
-                }
-                if(id[4]==0){//Controlamos que tipo de visita es y mandamos un no o un si depende del caso
-                    String urgencia="NO";
-                    visita.add(urgencia);
-                }else{
-                    String urgencia="SI";
-                    visita.add(urgencia);
-                }
-                Visitas.add(visita);
-            }
-            for(ArrayList v:Visitas){
-                System.out.println(v.toString());
-                }
-                System.out.println("");
-            
-        }
-}
-        public static void facturacion(ArrayList <int[]> registroVisitas,ArrayList <ArrayList> registroClientes,double [] listaTarifas){
-            double efectivo=0;
-            double tarjeta=0;
-            double transferencia=0;
-            double total=0;
-            //for(int i=0;i<registroVisitas.size();i++){//al meter el for se desmadra
-                if((int)registroClientes.get(3).get(5)==0){//i en el primer get,controlamos el metodo de pago en registroVisitas y dependiendo del numero lo guardamos en un tipo de pago
-                    int [] pago=registroVisitas.get(3);//creamos y controlamos el tipo de tarifa, la que nos salga la sumamos en la variable que diga el anterior if
-                    if(pago[3]==0){
-                        transferencia+=listaTarifas[0];
-                    }else{
-                        transferencia+=listaTarifas[1];
-                    }
-                
-                }else if((int)registroClientes.get(3).get(5)==1){
-                    int [] pago=registroVisitas.get(3);
-                    if(pago[3]==0){
-                        tarjeta+=listaTarifas[0];
-                    }else{
-                        tarjeta+=listaTarifas[1];
-                    }
-                }else{
-                    int [] pago=registroVisitas.get(3);
-                    if(pago[3]==0){
-                        efectivo+=listaTarifas[0];
-                    }else{
-                        efectivo+=listaTarifas[1];
-                    }
-                }
-            //}
-            total=efectivo+tarjeta+transferencia;
-            System.out.println("La facturacion es la siguiente: \n"
-                        + "Efectivo: "+efectivo+"\n"
-                        + "Tarjeta: "+tarjeta+"\n"
-                        + "Transferencia: "+transferencia+"\n"
-                        + "Total: "+total);
-        }*/
-
