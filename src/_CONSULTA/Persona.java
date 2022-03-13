@@ -167,12 +167,14 @@ public class Persona {
 		return apellidos;
 	}
 	public LocalDate generarFNacimiento() {
+		//He cambiado los rangos de las fechas para que salgan edades hasta 105 años,falta poner el minimo de edad de 8 años
 		long fechaInicio = LocalDate.of(1917, 1, 1).toEpochDay();
-		long fechaFinal = LocalDate.of(2014, 1, 1).toEpochDay();
+		long fechaFinal = LocalDate.now().toEpochDay();
 		long fNacimiento = ThreadLocalRandom.current().nextLong(fechaInicio, fechaFinal);
 		return LocalDate.ofEpochDay(fNacimiento);
 	}
 	public String generarGenero() {
+		//Hay que poner probalidad de 45% para hombre y 55% para mujer
 		String [] generos = {"Hombre", "Mujer"};
 		int randomGen = (int)Math.floor((int)(generos.length)*Math.random());
 		return generos[randomGen];
