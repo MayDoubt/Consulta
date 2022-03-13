@@ -25,14 +25,14 @@ public class Consulta_2 {
 			LocalDate fechaFinal = LocalDate.of(LocalDate.now().getYear(),Month.APRIL,30);
 		    
 			//Variables de generacion	
-			int numeroEspecialistas = 3;
+			int numeroEspecialistas = 6;
 			int numeroPacientes = 3000;
 			
 			
 		    //Variables de mensajes
-		    String opcion_Msj="Seleccione una opcion.";
+		    String opcion_Msj="Seleccione una opci贸n.";
 		    String salir_Msj="Gracias por usar el programa.";
-		    String errorOpcion_Msj="Esa opcion no existe, por favor seleccione una opcion valida.";
+		    String errorOpcion_Msj="Esa opci贸n no existe, por favor seleccione una opcion v谩lida.";
 		            
 		    //Menu
 		        
@@ -76,9 +76,9 @@ public class Consulta_2 {
 		/*Metodos de interfaz de usuario*/
 		public static void mostrarMenu() {//Muestra las opciones del menu
 			System.out.println ("MENU:\n");
-		    System.out.println ("1. Generaci髇 de consultas");
+		    System.out.println ("1. Generaci贸n de consultas");
 		    System.out.println ("2. Imprimir visitas");
-		    System.out.println ("3. Facturaci髇 periodo generado");
+		    System.out.println ("3. Facturaci贸n periodo generado");
 		    System.out.println ("4. Consultas generales");
 		    System.out.println ("9. Salir \n");
 		}
@@ -93,10 +93,10 @@ public class Consulta_2 {
             sc = new Scanner(System.in);
             do{
             	try{
-                    System.out.print(mensaje+" Introduce un n鷐ero entre "+(inicio)+" y "+(fin)+": ");
+                    System.out.print(mensaje+" Introduce un n锟絤ero entre "+(inicio)+" y "+(fin)+": ");
                     numero = sc.nextInt();		
             	} catch (InputMismatchException | NumberFormatException ex){
-                    System.err.println("\nIntroduzca un n鷐ero no un caracter, por favor.");
+                    System.err.println("\nIntroduzca un n锟絤ero no un caracter, por favor.");
                     sc.next();
             	}
             } while (numero<inicio || numero>fin);
@@ -110,7 +110,7 @@ public class Consulta_2 {
 			registroEspecialistas = new ArrayList[numeroEspecialistas];
 			registroVisitas = new ArrayList<int[]>();
 			festivos = new ArrayList <Integer>();
-			String [] listaEspecialidades = {"Homeopat韆","Quiropraxia"};
+			String [] listaEspecialidades = {"Homeopat铆a","Quiropraxia"};
 			
 				generarFestivos(fechaInicial);
 				generarEntidades(numeroPacientes);

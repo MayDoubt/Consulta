@@ -35,7 +35,7 @@ public class Persona {
 	 * @param nombre the nombre to set
 	 */
 	public void setNombre(String nombre) {
-		nombre = nombre;
+		this.nombre = nombre;
 	}
 	/**
 	 * @return the apellidos
@@ -47,7 +47,7 @@ public class Persona {
 	 * @param apellidos the apellidos to set
 	 */
 	public void setApellidos(String apellidos) {
-		apellidos = apellidos;
+		this.apellidos = apellidos;
 	}
 	/**
 	 * @return the fNacimiento
@@ -143,12 +143,23 @@ public class Persona {
 	}
 
 	public String generarNombre() {
-		String [] listaNombres = {"Rishbha","Handel","Milind","Pulkita","Yesus","Mell","Trent","Kalantha","Upravda","Stacy","Kalantha","Lincoln","Ernest","Stamford","Pryderi","Pablo","Fernando","Grace","Jaun","Nesim","Lilah","Mayrah","Madelyn","Barlow","Ilka","Beryl","Onora","Edeline","Stratton","Beryl"};
+		//Metodo para una vez generado el genero, generar un nombre femenino o masculino
+		/*String genero=generarGenero();
+		if(genero.equals("Hombre")) {
+			String [] listaNombresHombres = {"Tomás","Fausto","Pablo","Florencio","Julio","Aníbal","Feliciano","Fernando","Antonio","Mario","Javier","Mauricio","Eustaquio","Leopoldo","Carlos","Manolo","Leandro","Jaime","Hector","Manuel","Alejandro","Sandro","Pepe","José","Marcelo","Jorge","Pascual","Reinaldo","Cayetano","Daniel"};
+			int nombre = (int)Math.floor((int)(listaNombresHombres.length)*Math.random());	
+			return listaNombresHombres[nombre];
+		}else {
+			String [] listaNombresMujeres = {"Cristina","Luz","Maria","Luciana","Mercedes","Inés","Soraya","Marina","Salma","Beatriz","Soledad","Consuelo","Martina","Luisa","Silvia","Antonia","Paula","Blanca","Aida","Mariela","Justina","Andrea","Sandra","Nadia","Rosario","Eugenia","Purita","Elvira","Ana","Eva"};		
+			int nombre = (int)Math.floor((int)(listaNombresMujeres.length)*Math.random());
+			return listaNombresMujeres[nombre];
+		}*/
+		String [] listaNombres = {"Tomás","Alfreda","Fausto","Luz","Pablo","Maria","Florencio","Luciana","Julio","Mercedes","Aníbal","Inés","Feliciano","Soraya","Fernando","Marina","Antonio","Salma","Mario","Beatriz","Javier","Soledad","Mauricio","Consuelo","Eustaquio","Martina","Leopoldo","Luisa","Carlos","Silvia","Manolo","Antonia","Leandro","Paula","Jaime","Blanca","Hector","Aida","Manuel","Mariela","Alejandro","Justina","Sandro","Andrea","Pepe","Sandra","José","Nadia","Marcelo","Rosario","Jorge","Eugenia","Pascual","Purita","Reinaldo","Elvira","Cayetano","Ana","Daniel","Eva"};		
 		int nombre = (int)Math.floor((int)(listaNombres.length)*Math.random());
 		return listaNombres[nombre];
 	}
 	public String generarApellidos() {
-		String [] listaApellidos = {"Gladstone","Weeden","Sylvia","Utter","Lebron","Vicente","Weigand","Nelson","Lewallen","Brew","Mccombs","Rhee","William","Vierra","Kegley","Shears","Dann","Sparkle","Habib","Adcock","Sundberg","Elia","Hickok","Huertas", "Hodnett","Higgins","Klos","Junker","Enright"};
+		String [] listaApellidos = {"Velasco","Molina","Rodriguez","Navarro","Mora","Ortega","Andres","Nunez","Vicente","Marquez","Vidal","Ibanez","Gimenez","Prieto","Hernandez","Romero","Campos","Alvarez","Vicente","Lorenzo","Blanco","Fernandez","Ortiz","Molina","Ruiz","Bravo","Torres","Mendez","Saez","Leon","Dominguez","Sanchez","Mejias","Serrano","Gutierrez","Santos","Iba","Flores","Arias","Medina","Lozano","Gomez","Marin","Fuentes","Castillo","Carmona","Benjumea","Iglesias","Carrascosa","Moreno"};
 		String apellidos ="";
 		int randomApellido = (int)Math.floor((int)(listaApellidos.length)*Math.random());
 		int randomApellido2 = (int)Math.floor((int)(listaApellidos.length)*Math.random());
@@ -156,8 +167,8 @@ public class Persona {
 		return apellidos;
 	}
 	public LocalDate generarFNacimiento() {
-		long fechaInicio = LocalDate.of(1900, 1, 1).toEpochDay();
-		long fechaFinal = LocalDate.now().toEpochDay();
+		long fechaInicio = LocalDate.of(1917, 1, 1).toEpochDay();
+		long fechaFinal = LocalDate.of(2014, 1, 1).toEpochDay();
 		long fNacimiento = ThreadLocalRandom.current().nextLong(fechaInicio, fechaFinal);
 		return LocalDate.ofEpochDay(fNacimiento);
 	}

@@ -89,12 +89,12 @@ public class Consulta {
 	
 	/*Metodos de interfaz de usuario*/
 	public static void mostrarMenu() {//Muestra las opciones del menu
-            System.out.println ("MENU:\n");
-            System.out.println ("1. Generación de consultas");
-            System.out.println ("2. Imprimir visitas");
-            System.out.println ("3. Facturación periodo generado");
-            System.out.println ("4. Consultas generales");
-            System.out.println ("9. Salir \n");
+		System.out.println ("MENU:\n");
+		System.out.println ("1. Generación de consultas");
+        System.out.println ("2. Imprimir visitas");
+        System.out.println ("3. Facturación periodo generado");
+        System.out.println ("4. Consultas generales");
+        System.out.println ("9. Salir \n");
 	}
 	
 	public static void mostrarSubMenu() {
