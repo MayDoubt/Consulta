@@ -1,21 +1,17 @@
 package _CONSULTA;
 
-public class Visita {
+public class Visita extends Paciente {
 
-	protected int idCliente;
-	protected int idEspecialista;
-	protected String especialidad;
+	
 	protected double tarifa;
-	protected String formaPago;
 	protected String urgencia;
 	private int probUrgencia=48;//Para cambiar la probabilidad de urgencia.
 	
-	public Visita(int idCliente, int idEspecialista, String especialidad, int tarifa, String formaPago, boolean urgencia) {
-		this.idCliente=idCliente;
-		this.idEspecialista=idEspecialista;
-		this.especialidad=especialidad;
-		this.tarifa=generarTarifa(tarifa);
-		this.formaPago=formaPago;
+	
+	
+	public Visita(Paciente paciente) {
+		super(paciente.idEspecialista, paciente.especialidad);
+		this.tarifa=generarTarifa((super.especialidad.equalsIgnoreCase(super.listaEspecialidades[0]))?0:1);
 		this.urgencia=generarUrgencia();
 	}
 	public double generarTarifa(int indice) {
