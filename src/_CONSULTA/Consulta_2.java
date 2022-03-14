@@ -10,10 +10,10 @@ import java.util.Scanner;
 
 public class Consulta_2 {
 	
-	//Variables de registro
-    static ArrayList <ArrayList> registroPacientes;
-    static ArrayList [] registroEspecialistas;
-    static ArrayList<int[]> registroVisitas;
+	//Variables de registro y generales
+    static ArrayList <Paciente> registroPacientes;
+    static Profesional [] registroEspecialistas;
+    static ArrayList<Visita> registroVisitas;
     static ArrayList <Integer> festivos;
     
 	
@@ -104,32 +104,108 @@ public class Consulta_2 {
 		}
 		
 		/*Modulo generarEntidades*/
+		/*Metodo general de generación de entidades*/
 		public static void generarConsultas(int numeroPacientes, int numeroEspecialistas, LocalDate fechaInicial, LocalDate fechaFinal) {
 			
-			registroPacientes = new ArrayList<ArrayList>();
-			registroEspecialistas = new ArrayList[numeroEspecialistas];
-			registroVisitas = new ArrayList<int[]>();
+			registroPacientes = new ArrayList<Paciente>();
+			registroEspecialistas = new Profesional[numeroEspecialistas];
+			registroVisitas = new ArrayList<Visita>();
 			festivos = new ArrayList <Integer>();
 			String [] listaEspecialidades = {"Homeopatía","Quiropraxia"};
+			ArrayList <Persona> bolsaClientes = new ArrayList <Persona>();
 			
 				generarFestivos(fechaInicial);
-				generarEntidades(numeroPacientes);
-				generarEntidades(numeroEspecialistas,listaEspecialidades);
-				generarAgenda(fechaInicial,fechaFinal);
+				generarEntidades(numeroEspecialistas);
+				bolsaClientes=generarEntidades(numeroPacientes,listaEspecialidades);
+				generarAgenda(fechaInicial,fechaFinal, bolsaClientes);
 				System.out.println("Se han generado las consultas correctamente.");
+				
 		}
-
-		private static void generarAgenda(LocalDate fechaInicial, LocalDate fechaFinal) {
+		
+		/*Metodo de generación de periodos de consulta*/
+		private static void generarAgenda(LocalDate fechaInicial, LocalDate fechaFinal, ArrayList <Persona> bolsaClientes) {
+			int periodoConsultas = ((int)ChronoUnit.DAYS.between(fechaInicial, fechaFinal))+1;
+			for (int i=0; i<periodoConsultas; i++) {
+	                    generarDia(fechaInicial,bolsaClientes,i);
+			}
+		}
+		
+		/*Metodo de generación de dias particulares*/
+		public static void generarDia(LocalDate fechaInicial, ArrayList <Persona> bolsaClientes, int fecha){
+	        if (!festivos.contains(fecha)) {
+	        	for (int i=0; i<registroEspecialistas.length; i++) {
+	        		if(!diaLibre(registroEspecialistas[i],fechaInicial,fecha)) {
+	        				generarVisitas(bolsaClientes, registroEspecialistas[i], fecha);
+	        		}
+	        	}
+	        }
+		}
+		
+		/*Metodo de generación de visitas*/
+		private static void generarVisitas(ArrayList<Persona> bolsaClientes, Profesional profesional, int fecha) {
+		     int nVisitas=(int)(Math.floor(6*Math.random())+10); //random para las visitas de ese dia y ese especialista
+	            for(int i=0;i<nVisitas;i++){
+	                int randomCliente = (int)Math.floor((int)(bolsaClientes.size())*Math.random());//Random para coger clientes al azar y registrarlos si es necesario
+	                if(!checkCliente(bolsaClientes.get(randomCliente))){
+	                	registroPaciente(bolsaClientes.get(randomCliente));
+	                	int idCliente = checkCliente(bolsaClientes.get(randomCliente).dni);
+	                	registroVisita(idCliente, registroPacientes.get(idCliente),fecha);
+	                }else{
+	                    int idCliente = checkCliente(bolsaClientes.get(randomCliente).dni);
+	                    registroVisita(idCliente, registroPacientes.get(idCliente),fecha);
+	                }
+	            }
+		}
+		private static void registroPaciente(Persona persona) {
 			// TODO Auto-generated method stub
 			
 		}
 
-		private static void generarEntidades(int numeroEntidades ) {
-			// TODO Auto-generated method stub
-			
+		/*Metodo que devuelve la posicion de un cliente por su dni*/
+		private static int checkCliente(String dniCliente) {
+		    for(int i=0; i<registroPacientes.size();i++) {
+	        	if(registroPacientes.get(i).dni.equals(dniCliente)) {
+	                    return i;
+	        	}
+	        }
+	        return -1;
 		}
-		private static void generarEntidades(int numeroEntidades, String [] listaEspecialidades) {
-			// TODO Auto-generated method stub
+
+		/*Metodo que comprueba si existe el registro de paciente del cliente*/
+		private static boolean checkCliente(Persona cliente) {
+			for(int i=0; i<registroPacientes.size();i++) {
+				if(registroPacientes.get(i).dni.equals(cliente.dni)) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		private static void registroVisita(int idCliente, Paciente paciente, int fecha) {
+			Visita visita = new Visita(paciente);
+			registroVisitas.add(visita);
+		}
+
+		/*Metodo de comprobación de dia festivo/libre*/
+		public static boolean diaLibre(Profesional registroEspecialista, LocalDate fechaInicial, int fecha) {
+            LocalDate dia = fechaInicial.plusDays(fecha-1);
+            int diaSem=dia.getDayOfWeek().ordinal();
+            	if ((int)registroEspecialista.diaLibre==diaSem||diaSem>4) {
+            		return true;
+            	} else {
+            		return false;
+            	}
+		}
+		
+		private static ArrayList<Persona> generarEntidades(int numeroEntidades, String [] listaEspecialidades) {
+			ArrayList <Persona> bolsaClientes = new ArrayList <Persona>();
+            for (int i=0; i<numeroEntidades; i++) {
+            	Persona cliente = new Persona ();
+            	bolsaClientes.add(cliente);
+            }
+			return bolsaClientes;	
+		}
+		private static void generarEntidades(int numeroEntidades) {
 			
 		}
 
@@ -152,5 +228,4 @@ public class Consulta_2 {
 			int newFecha = (int) ChronoUnit.DAYS.between(fechaInicial, fecha);
 			return newFecha;
 		}
-        
 }
