@@ -1,6 +1,7 @@
 package _CONSULTA;
 
 import java.time.*;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -13,18 +14,30 @@ public class Persona {
 	protected String dni;
 	protected String direccion;
 	protected String telefono;
+	protected String [] listaEspecialidades = {"Homeopat�a", "Quiropraxia"};
 
 	public Persona() {
-               
+		this.genero = generarGenero();
 		this.nombre = generarNombre();
 		this.apellidos = generarApellidos();
 		this.fNacimiento = generarFNacimiento();
-		this.genero = generarGenero();
 		this.direccion = generarDireccion();
 		this.telefono = generarTelefono();
 		if ((LocalDate.now().getYear()-this.fNacimiento.getYear())>14)
 			this.dni = generarDni();
 	}
+	public Persona(Persona persona) {
+		this.genero = persona.genero;
+		this.nombre = persona.nombre;
+		this.apellidos = persona.apellidos;
+		this.fNacimiento = persona.fNacimiento;
+		this.direccion =persona.direccion;
+		this.telefono = persona.telefono;
+		if (persona.dni!=null){
+			this.dni = persona.dni;
+		}
+	}
+	
 	/**
 	 * @return the nombre
 	 */
@@ -114,9 +127,11 @@ public class Persona {
 		return "Nombre=" + nombre + ", Apellidos=" + apellidos + ", fNacimiento=" + fNacimiento + ", genero="
 				+ genero + ", dni=" + dni + ", direccion=" + direccion + ", telefono=" + telefono + "]";
 	}
+
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(dni);
+		return Objects.hash(apellidos, fNacimiento, nombre);
 	}
 	@Override
 	public boolean equals(Object obj) {
@@ -127,36 +142,20 @@ public class Persona {
 		if (getClass() != obj.getClass())
 			return false;
 		Persona other = (Persona) obj;
-		return Objects.equals(dni, other.dni);			
+		return Objects.equals(apellidos, other.apellidos) && ((int)ChronoUnit.YEARS.between(this.fNacimiento, other.fNacimiento)<10)  
+				&& Objects.equals(nombre, other.nombre);
 	}
-	public boolean equalsIgnoreDni(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Persona other = (Persona) obj;
-		return Objects.equals(apellidos, other.apellidos) && Objects.equals(nombre, other.nombre)
-				&& Objects.equals(direccion, other.direccion) && Objects.equals(fNacimiento, other.fNacimiento)
-				&& Objects.equals(genero, other.genero)	&& telefono == other.telefono;			
-	}
-
 	public String generarNombre() {
 		//Metodo para una vez generado el genero, generar un nombre femenino o masculino
-		/*String genero=generarGenero();
-		if(genero.equals("Hombre")) {
-			String [] listaNombresHombres = {"Tomás","Fausto","Pablo","Florencio","Julio","Aníbal","Feliciano","Fernando","Antonio","Mario","Javier","Mauricio","Eustaquio","Leopoldo","Carlos","Manolo","Leandro","Jaime","Hector","Manuel","Alejandro","Sandro","Pepe","José","Marcelo","Jorge","Pascual","Reinaldo","Cayetano","Daniel"};
+		if(this.genero.equalsIgnoreCase("Hombre")) {
+			String [] listaNombresHombres = {"Tom�s","Fausto","Pablo","Florencio","Julio","An�bal","Feliciano","Fernando","Antonio","Mario","Javier","Mauricio","Eustaquio","Leopoldo","Carlos","Manolo","Leandro","Jaime","Hector","Manuel","Alejandro","Sandro","Pepe","José","Marcelo","Jorge","Pascual","Reinaldo","Cayetano","Daniel"};
 			int nombre = (int)Math.floor((int)(listaNombresHombres.length)*Math.random());	
 			return listaNombresHombres[nombre];
 		}else {
-			String [] listaNombresMujeres = {"Cristina","Luz","Maria","Luciana","Mercedes","Inés","Soraya","Marina","Salma","Beatriz","Soledad","Consuelo","Martina","Luisa","Silvia","Antonia","Paula","Blanca","Aida","Mariela","Justina","Andrea","Sandra","Nadia","Rosario","Eugenia","Purita","Elvira","Ana","Eva"};		
+			String [] listaNombresMujeres = {"Cristina","Luz","Maria","Luciana","Mercedes","In�s","Soraya","Marina","Salma","Beatriz","Soledad","Consuelo","Martina","Luisa","Silvia","Antonia","Paula","Blanca","Aida","Mariela","Justina","Andrea","Sandra","Nadia","Rosario","Eugenia","Purita","Elvira","Ana","Eva"};		
 			int nombre = (int)Math.floor((int)(listaNombresMujeres.length)*Math.random());
 			return listaNombresMujeres[nombre];
-		}*/
-		String [] listaNombres = {"Tomás","Alfreda","Fausto","Luz","Pablo","Maria","Florencio","Luciana","Julio","Mercedes","Aníbal","Inés","Feliciano","Soraya","Fernando","Marina","Antonio","Salma","Mario","Beatriz","Javier","Soledad","Mauricio","Consuelo","Eustaquio","Martina","Leopoldo","Luisa","Carlos","Silvia","Manolo","Antonia","Leandro","Paula","Jaime","Blanca","Hector","Aida","Manuel","Mariela","Alejandro","Justina","Sandro","Andrea","Pepe","Sandra","José","Nadia","Marcelo","Rosario","Jorge","Eugenia","Pascual","Purita","Reinaldo","Elvira","Cayetano","Ana","Daniel","Eva"};		
-		int nombre = (int)Math.floor((int)(listaNombres.length)*Math.random());
-		return listaNombres[nombre];
+		}
 	}
 	public String generarApellidos() {
 		String [] listaApellidos = {"Velasco","Molina","Rodriguez","Navarro","Mora","Ortega","Andres","Nunez","Vicente","Marquez","Vidal","Ibanez","Gimenez","Prieto","Hernandez","Romero","Campos","Alvarez","Vicente","Lorenzo","Blanco","Fernandez","Ortiz","Molina","Ruiz","Bravo","Torres","Mendez","Saez","Leon","Dominguez","Sanchez","Mejias","Serrano","Gutierrez","Santos","Iba","Flores","Arias","Medina","Lozano","Gomez","Marin","Fuentes","Castillo","Carmona","Benjumea","Iglesias","Carrascosa","Moreno"};
@@ -167,16 +166,14 @@ public class Persona {
 		return apellidos;
 	}
 	public LocalDate generarFNacimiento() {
-		//He cambiado los rangos de las fechas para que salgan edades hasta 105 años,falta poner el minimo de edad de 8 años
 		long fechaInicio = LocalDate.of(1917, 1, 1).toEpochDay();
 		long fechaFinal = LocalDate.now().toEpochDay();
 		long fNacimiento = ThreadLocalRandom.current().nextLong(fechaInicio, fechaFinal);
 		return LocalDate.ofEpochDay(fNacimiento);
 	}
 	public String generarGenero() {
-		//Hay que poner probalidad de 45% para hombre y 55% para mujer
 		String [] generos = {"Hombre", "Mujer"};
-		int randomGen = (int)Math.floor((int)(generos.length)*Math.random());
+		int randomGen = ((int)Math.floor((int)45*Math.random())<=45)?0:1;
 		return generos[randomGen];
 	}
 	public String generarDni() {

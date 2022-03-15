@@ -4,46 +4,56 @@ import java.util.Objects;
 
 public class Profesional extends Persona {
 	
-	protected static int id;
+	private static int contador = 0;
 	protected int idEspecialista;
 	protected String[] especialidades;
 	protected int diaLibre;
 	
 	public Profesional(int nEspecialidades) {
 		super();
-		this.idEspecialista+=1;
+		this.idEspecialista=contador++;
 		this.especialidades=generarEspecialidad(super.listaEspecialidades, nEspecialidades);
 		this.diaLibre=generarDiaLibre();
 	}
 	
-	public static int getId() {
-		return id;
-	}
-
-	public static void setId(int id) {
-		Profesional.id = id;
-	}
-
+	/**
+	 * @return the idEspecialista
+	 */
 	public int getIdEspecialista() {
 		return idEspecialista;
 	}
 
+	/**
+	 * @param idEspecialista the idEspecialista to set
+	 */
 	public void setIdEspecialista(int idEspecialista) {
 		this.idEspecialista = idEspecialista;
 	}
 
-	public String[] getEspecialidad() {
+	/**
+	 * @return the especialidades
+	 */
+	public String[] getEspecialidades() {
 		return especialidades;
 	}
 
-	public void setEspecialidad(String [] especialidades) {
+	/**
+	 * @param especialidades the especialidades to set
+	 */
+	public void setEspecialidades(String[] especialidades) {
 		this.especialidades = especialidades;
 	}
 
+	/**
+	 * @return the diaLibre
+	 */
 	public int getDiaLibre() {
 		return diaLibre;
 	}
 
+	/**
+	 * @param diaLibre the diaLibre to set
+	 */
 	public void setDiaLibre(int diaLibre) {
 		this.diaLibre = diaLibre;
 	}
@@ -90,12 +100,9 @@ public class Profesional extends Persona {
 			return Special;
 		}
 	}
-
+	/*Este metodo está por si se quiere randomizar los dias libres de cada especialista*/
 	public int generarDiaLibre() {
-		
-		String [] diasLibres= {"Lunes","Martes","Miercoles","Jueves","Viernes"};
-		int Dia = (int)Math.floor((int)(diasLibres.length)*Math.random());
-		
+		int Dia = 5;
 		return Dia;
 	}
 	

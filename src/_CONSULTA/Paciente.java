@@ -1,10 +1,8 @@
 package _CONSULTA;
 
-import java.util.Objects;
-
 public class Paciente extends Persona {
 	
-	protected static int id;
+	private static int contador = 0;
 	protected int idPaciente;
 	protected int idEspecialista;
 	protected String especialidad;
@@ -15,39 +13,26 @@ public class Paciente extends Persona {
 	 */
 	public Paciente(int idEspecialista, String especialidad) {
 		super();
-		this.idPaciente+=1;
+		this.idPaciente=contador++;
 		this.idEspecialista=idEspecialista;
 		this.especialidad=especialidad;
 		this.formaPago=generarFPago();
 		
 	}
 
-	/**
-	 * @return the id
-	 */
-	public static int getId() {
-		return id;
+	public Paciente(Persona persona, int idEspecialista, String especialidad) {
+		super(persona);
+		this.idPaciente=contador++;
+		this.idEspecialista=idEspecialista;
+		this.especialidad=especialidad;
+		this.formaPago=generarFPago();
 	}
-
-	/**
-	 * @param id the id to set
-	 */
-	public static void setId(int id) {
-		Paciente.id = id;
-	}
-
+	
 	/**
 	 * @return the idPaciente
 	 */
 	public int getIdPaciente() {
 		return idPaciente;
-	}
-
-	/**
-	 * @param idPaciente the idPaciente to set
-	 */
-	public void setIdPaciente(int idPaciente) {
-		this.idPaciente = idPaciente;
 	}
 
 	/**
@@ -90,26 +75,6 @@ public class Paciente extends Persona {
 				+ especialidad + "]";
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + Objects.hash(idPaciente);
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!super.equals(obj))
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Paciente other = (Paciente) obj;
-		return idPaciente == other.idPaciente;
-	}
-	
 	public String generarFPago() {
 		String [] listaFPago = {"Tarjeta","Efectivo","Transferencia"};
 		int fPagoRandom= (int)Math.floor((int)(listaFPago.length)*Math.random());
