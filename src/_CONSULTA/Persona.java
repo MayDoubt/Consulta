@@ -148,7 +148,7 @@ public class Persona {
 	public String generarNombre() {
 		//Metodo para una vez generado el genero, generar un nombre femenino o masculino
 		if(this.genero.equalsIgnoreCase("Hombre")) {
-			String [] listaNombresHombres = {"Tomás","Fausto","Pablo","Florencio","Julio","Aníbal","Feliciano","Fernando","Antonio","Mario","Javier","Mauricio","Eustaquio","Leopoldo","Carlos","Manolo","Leandro","Jaime","Hector","Manuel","Alejandro","Sandro","Pepe","JosÃ©","Marcelo","Jorge","Pascual","Reinaldo","Cayetano","Daniel"};
+			String [] listaNombresHombres = {"Tomás","Fausto","Pablo","Florencio","Julio","Aníbal","Feliciano","Fernando","Antonio","Mario","Javier","Mauricio","Eustaquio","Leopoldo","Carlos","Manolo","Leandro","Jaime","Hector","Manuel","Alejandro","Sandro","Pepe","Jose","Marcelo","Jorge","Pascual","Reinaldo","Cayetano","Daniel"};
 			int nombre = (int)Math.floor((int)(listaNombresHombres.length)*Math.random());	
 			return listaNombresHombres[nombre];
 		}else {

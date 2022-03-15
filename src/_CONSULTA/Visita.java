@@ -2,6 +2,7 @@ package _CONSULTA;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+
 public class Visita {
 
 	
@@ -26,12 +27,17 @@ public class Visita {
 		this.urgencia=generarUrgencia();
 	}
 
-	@Override
-	public String toString() {
+	public String toString(Profesional[] registroEspecialistas) {
 		DateTimeFormatter shortFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		return "tarifa=" + tarifa + "€,\t urgencia=" + urgencia + ",\t idEspecialista=" + idEspecialista
-				+ ",\t especialidad=" + especialidad + ",\t idPaciente=" + idPaciente + ",\t fecha=" + fecha.format(shortFormat) + ", formaPago="
-				+ formaPago + "]";
+		if(urgencia.equals("Si")) {
+			return "Tarifa=" +String.format("%.2f", tarifa*1.2) + " €\t Urgencia=" + urgencia + "\t IdEspecialista=" + idEspecialista
+					+"\t NombreEsp="+ String.format("%-10s",registroEspecialistas[idEspecialista].nombre) + "\t Especialidad=" 
+					+ especialidad + "\t IdPaciente=" + idPaciente + "\t Fecha=" + fecha.format(shortFormat) + " FormaPago="+ formaPago;
+		}else {
+			return "Tarifa=" +String.format("%.2f", tarifa)+ " €\t Urgencia=" + urgencia + "\t IdEspecialista=" + idEspecialista
+					+"\t NombreEsp="+ String.format("%-10s",registroEspecialistas[idEspecialista].nombre) + "\t Especialidad=" 
+					+ especialidad + "\t IdPaciente=" +String.format("%-10d", idPaciente) + "\t Fecha=" + fecha.format(shortFormat) + " FormaPago="+ formaPago;
+		}
 	}
 
 	public double generarTarifa(int indice) {

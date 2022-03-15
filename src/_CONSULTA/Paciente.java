@@ -65,9 +65,10 @@ public class Paciente extends Persona {
 
 	@Override
 	public String toString() {
-		return "idPaciente=" + idPaciente + ", idEspecialista=" + idEspecialista + ", especialidad="
-				+ especialidad + ", nombre=" + nombre + ", apellidos=" + apellidos + ", fNacimiento=" + fNacimiento
-				+ ", genero=" + genero + ", dni=" + dni + ", direccion=" + direccion + ", telefono=" + telefono + "]";
+		return "IdPaciente=" + idPaciente + "\t IdEspecialista=" + idEspecialista + "\t Especialidad="
+				+ especialidad + "\t Nombre=" +String.format("%-10s", nombre) + "\t Apellidos=" +String.format("%-15s", apellidos) +
+				"\t FNacimiento=" +String.format("%-10s", fNacimiento) + "\t Genero=" + genero + "\t DNI=" + dni + 
+				"\t Direccion=" +String.format("%-30s", direccion) + "\t Telefono=" + telefono;
 	}
 
 	public String toStringIgnorePersonal() {

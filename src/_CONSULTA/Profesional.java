@@ -62,11 +62,11 @@ public class Profesional extends Persona {
 	public String toString() {
 		String [] diasLibres= {"Lunes","Martes","Miercoles","Jueves","Viernes"};
 		if(especialidades.length==1) {
-			return "Profesional [idespecialista=" + idEspecialista + ", especialidad=" + especialidades[0] + ", diaLibre="
-				+ diasLibres[diaLibre] + "]";
+			return "Profesional: IdEspecialista=" + idEspecialista + "\t Nombre=" +String.format("%-15s",this.nombre)+ "\t Especialidad=" 
+					+ String.format("%-20s",especialidades[0]) + "\t DiaLibre="+ diasLibres[diaLibre];
 		}else {
-			return "Profesional [idespecialista=" + idEspecialista + ", especialidad=" + especialidades[0] +","
-					+ especialidades[1] +", diaLibre="+ diasLibres[diaLibre] + "]";
+			return "Profesional: IdEspecialista=" + idEspecialista + "\t Nombre=" +String.format("%-15s",this.nombre)+ "\t Especialidad=" 
+					+ especialidades[0] +" y "+ especialidades[1] + "\t DiaLibre="+ diasLibres[diaLibre];
 		}
 	}
 	

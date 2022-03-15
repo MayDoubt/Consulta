@@ -6,8 +6,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
-
 import java.util.Scanner;
+
 
 public class Consulta_2 {
 	
@@ -49,17 +49,18 @@ public class Consulta_2 {
 		       			break;
 		       		case 2://Opcion imprimir visitas
 		      			separador();
-		      			imprimirVisitas();
+		      			imprimirDatos(registroVisitas,registroEspecialistas);
 		       			separador();
 		          		break;
 		       		case 3://Opcion imprimir profesionales
 		      			separador();
-		      			imprimirEspecialistas();
+		      			imprimirDatos(registroEspecialistas);
+		      			numUrgencias(registroVisitas);
 		       			separador();
 		          		break;
 		           	case 4://Opcion imprimir registro clientes
 		           		separador();
-		           		imprimirClientes();
+		           		imprimirDatos(registroPacientes);
 		           		separador();
 		           		break;
 		           	case 5://Opcion facturacion
@@ -182,11 +183,11 @@ public class Consulta_2 {
 		private static void generarEntidades(int numeroEntidades, int numeroDobleEsp) {
 			Profesional [] listaEspecialistas = new Profesional [numeroEntidades]; 
             for (int i=0; i<numeroEntidades; i++) {
-            	if (i>numeroDobleEsp) {
+            	if (i>numeroDobleEsp-1) {
             		Profesional especialista = new Profesional(1);
             		listaEspecialistas [i]=especialista;
             	} else {
-            		Profesional especialista = new Profesional(1);
+            		Profesional especialista = new Profesional(2);
         			listaEspecialistas [i]=especialista;
             	}
             }	
@@ -273,18 +274,18 @@ public class Consulta_2 {
             	}
 		}
 
-		public static void imprimirVisitas() {
+		public static void imprimirDatos(ArrayList<Visita> registroVisitas,Profesional[] registroEspecialistas) {
 			if(!(registroVisitas.size()==0)) {
 				for(int i=0; i<registroVisitas.size();i++) {
 					System.out.printf("Visita:%04d\t",i);
-					System.out.printf(registroVisitas.get(i).toString()+"\n");
+					System.out.printf(registroVisitas.get(i).toString(registroEspecialistas)+"\n");
 				}
 			} else {
 				System.out.println("El registro de visitas está vacío.");
 			}
 		}
 		
-		private static void imprimirEspecialistas() {
+		private static void imprimirDatos(Profesional[] registroEspecialistas) {
 			if(!(registroEspecialistas.length==0)) {
 				for(int i=0; i<registroEspecialistas.length;i++) {
 					System.out.println(registroEspecialistas[i].toString());
@@ -294,7 +295,7 @@ public class Consulta_2 {
 			}
 		}
 		
-		private static void imprimirClientes() {
+		private static void imprimirDatos(ArrayList registroPacientes) {
 			if(!(registroPacientes.size()==0)) {
 				for(int i=0; i<registroPacientes.size();i++) {
 					System.out.println(registroPacientes.get(i).toString());
@@ -341,4 +342,13 @@ public class Consulta_2 {
 			}
 			return sumTarifa;
 		}
+		public static void numUrgencias(ArrayList<Visita> registroVisitas) {
+	    	int cont=0;
+	    	for(int i=0; i<registroVisitas.size(); i++) {
+		    	if(registroVisitas.get(i).urgencia.equalsIgnoreCase("si")) {
+			    		cont++;
+		    	}
+	    	}
+	    	System.out.println("Número de consultas de urgencias: "+cont);
+	    }
 }
