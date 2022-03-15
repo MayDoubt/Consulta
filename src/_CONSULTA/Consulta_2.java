@@ -2,6 +2,7 @@ package _CONSULTA;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -24,15 +25,16 @@ public class Consulta_2 {
 			
 			//Variables de generacion
 			int numeroEspecialistas = 6;
-			int numeroPacientes = 3000;
+			int numeroInicialPacientes = 3000;
+			int numeroPacientes = 1000;
 			int numeroDobleEsp = 4;
 			registroEspecialistas = new Profesional[numeroEspecialistas];
 			
 			
 		    //Variables de mensajes
-		    String opcion_Msj="Seleccione una opción.";
+		    String opcion_Msj="Seleccione una opciÃ³n.";
 		    String salir_Msj="Gracias por usar el programa.";
-		    String errorOpcion_Msj="Esa opción no existe, por favor seleccione una opcion válida.";
+		    String errorOpcion_Msj="Esa opciÃ³n no existe, por favor seleccione una opcion vÃ¡lida.";
 		            
 		    //Menu
 		        
@@ -42,7 +44,7 @@ public class Consulta_2 {
 		        switch(opcion) {
 		           	case 1://Opcion
 		      			separador();
-		      			generarConsultas(numeroPacientes,numeroEspecialistas, numeroDobleEsp, fechaInicial,fechaFinal);
+		      			generarConsultas(numeroPacientes,numeroEspecialistas,numeroInicialPacientes,numeroDobleEsp, fechaInicial,fechaFinal);
 		       			separador();
 		       			break;
 		       		case 2://Opcion imprimir visitas
@@ -50,9 +52,19 @@ public class Consulta_2 {
 		      			imprimirVisitas();
 		       			separador();
 		          		break;
-		           	case 3://Opcion facturacion
+		       		case 3://Opcion imprimir profesionales
+		      			separador();
+		      			imprimirEspecialistas();
+		       			separador();
+		          		break;
+		           	case 4://Opcion imprimir registro clientes
 		           		separador();
-		           		imprimirEspecialistas();
+		           		imprimirClientes();
+		           		separador();
+		           		break;
+		           	case 5://Opcion facturacion
+		           		separador();
+		           		imprimirFacturacion(fechaFinal);
 		           		separador();
 		           		break;
 		           	case 9://Exit Option
@@ -74,18 +86,19 @@ public class Consulta_2 {
 			//==============METODOS==============//
 			
 		/*Metodos de interfaz de usuario*/
-		/*Metodo mostrar menú*/
+		/*Metodo mostrar menÃº*/
 		public static void mostrarMenu() {//Muestra las opciones del menu
 			System.out.println ("MENU:\n");
-		    System.out.println ("1. Generación de consultas");
+		    System.out.println ("1. GeneraciÃ³n de consultas");
 		    System.out.println ("2. Imprimir visitas");
-		    System.out.println ("3. Facturación periodo generado");
-		    System.out.println ("4. Consultas generales");
+		    System.out.println ("3. Registro especialistas");
+		    System.out.println ("4. Registro clientes");
+		    System.out.println ("5. Imprimir facturaciÃ³n anual");
 		    System.out.println ("9. Salir \n");
 		}
 		
 		public static void separador() {
-			System.out.println("\n======================================================\n");
+			System.out.println("\n=======================================================\n");
 		}
 		
 		public static int pedirNum (int inicio, int fin, String mensaje) {
@@ -94,10 +107,10 @@ public class Consulta_2 {
             sc = new Scanner(System.in);
             do{
             	try{
-                    System.out.print(mensaje+" Introduce un número entre "+(inicio)+" y "+(fin)+": ");
+                    System.out.print(mensaje+" Introduce un nÃºmero entre "+(inicio)+" y "+(fin)+": ");
                     numero = sc.nextInt();		
             	} catch (InputMismatchException | NumberFormatException ex){
-                    System.err.println("\nIntroduzca un número no un caracter, por favor.");
+                    System.err.println("\nIntroduzca un nÃºmero no un caracter, por favor.");
                     sc.next();
             	}
             } while (numero<inicio || numero>fin);
@@ -105,20 +118,21 @@ public class Consulta_2 {
 		}
 		
 		/*Modulo generarEntidades*/
-		/*Metodo general de generación de entidades*/
-		public static void generarConsultas(int numeroPacientes, int numeroEspecialistas, int numeroDobleEsp, LocalDate fechaInicial, LocalDate fechaFinal) {
+		/*Metodo general de generaciÃ³n de entidades*/
+		public static void generarConsultas(int numeroPacientes, int numeroEspecialistas,int numeroInicialPacientes, int numeroDobleEsp, LocalDate fechaInicial, LocalDate fechaFinal) {
 			
-			ArrayList <Persona> bolsaClientes = new ArrayList <Persona>();
+			ArrayList <Persona> bolsaInicialClientes = new ArrayList <Persona>();
 			
 				generarFestivos(fechaInicial);
 				generarEntidades(numeroEspecialistas,numeroDobleEsp);
-				bolsaClientes=generarEntidades(numeroPacientes);
-				generarAgenda(fechaInicial,fechaFinal, bolsaClientes);
+				bolsaInicialClientes=generarEntidades(numeroInicialPacientes);
+				registroInicial(bolsaInicialClientes);
+				generarAgenda(fechaInicial,fechaFinal, bolsaInicialClientes);
 				System.out.println("Se han generado las consultas correctamente.");
 				
 		}
 
-		/*Metodo de generación de periodos de consulta*/
+		/*Metodo de generaciÃ³n de periodos de consulta*/
 		private static void generarAgenda(LocalDate fechaInicial, LocalDate fechaFinal, ArrayList <Persona> bolsaClientes) {
 			int periodoConsultas = ((int)ChronoUnit.DAYS.between(fechaInicial, fechaFinal))+1;
 			for (int i=0; i<periodoConsultas; i++) {
@@ -126,7 +140,7 @@ public class Consulta_2 {
 			}
 		}
 		
-		/*Metodo de generación de dias particulares*/
+		/*Metodo de generaciÃ³n de dias particulares*/
 		public static void generarDia(LocalDate fechaInicial, ArrayList <Persona> bolsaClientes, int fecha){
 	        if (!festivos.contains(fecha)) {
 	        	for (int i=0; i<registroEspecialistas.length; i++) {
@@ -137,23 +151,24 @@ public class Consulta_2 {
 	        }
 		}
 		
-		/*Metodo de generación de visitas*/
-		private static void generarVisitas(ArrayList<Persona> bolsaClientes, Profesional profesional, int fecha) {
+		/*Metodo de generaciÃ³n de visitas*/
+		private static void generarVisitas(ArrayList<Persona> bolsaInicialClientes, Profesional profesional, int fecha) {
 		     int nVisitas=(int)(Math.floor(6*Math.random())+10); //random para las visitas de ese dia y ese especialista
 	            for(int i=0;i<nVisitas;i++){
-	                int randomCliente = (int)Math.floor((int)(bolsaClientes.size())*Math.random());//Random para coger clientes al azar y registrarlos si es necesario
-	                if(!checkCliente(bolsaClientes.get(randomCliente))){
-	                	int randomEsp= (int)Math.floor((int)(profesional.especialidades.length)*Math.random());
-	                	int idCliente = registroPaciente(bolsaClientes.get(randomCliente),profesional.idEspecialista,profesional.especialidades[randomEsp]);
-	                	registroVisita(idCliente, registroPacientes.get(idCliente),fecha);
-	                }else{
-	                    int idCliente = checkCliente(bolsaClientes.get(randomCliente).dni);
-	                    registroVisita(idCliente, registroPacientes.get(idCliente),fecha);
+	            	boolean randomRegistro = ((int)Math.floor((int)201*Math.random())==0)?true:false;//Random para coger clientes al azar y registrarlos si es necesario
+	            	if(randomRegistro) {
+	            		Persona cliente = new Persona ();
+	            		int randomEsp= (int)Math.floor((int)(profesional.especialidades.length)*Math.random());
+	            		registroPaciente(cliente,profesional.idEspecialista,profesional.especialidades[randomEsp]);
+	            		
+	                } else {
+	                	int randomCliente = (int)Math.floor((int)(registroPacientes.size())*Math.random());
+	                	registroVisita(registroPacientes.get(randomCliente).idPaciente, registroPacientes.get(randomCliente),fecha);
 	                }
 	            }
 		}
-		
-		/*Metodo de generación de clientes*/
+
+		/*Metodo de generaciÃ³n de clientes*/
 		private static ArrayList<Persona> generarEntidades(int numeroEntidades) {
 			ArrayList <Persona> bolsaClientes = new ArrayList <Persona>();
             for (int i=0; i<numeroEntidades; i++) {
@@ -163,7 +178,7 @@ public class Consulta_2 {
 			return bolsaClientes;	
 		}
 		
-		/*Metodo de generación de especialistas*/
+		/*Metodo de generaciÃ³n de especialistas*/
 		private static void generarEntidades(int numeroEntidades, int numeroDobleEsp) {
 			Profesional [] listaEspecialistas = new Profesional [numeroEntidades]; 
             for (int i=0; i<numeroEntidades; i++) {
@@ -178,7 +193,7 @@ public class Consulta_2 {
             registroEspecialistas=listaEspecialistas;
 		}
 		
-		/*Metodo de generación de festivos*/
+		/*Metodo de generaciÃ³n de festivos*/
 		private static void generarFestivos(LocalDate fechaInicial) {
 			LocalDate anioNuevo = LocalDate.of(LocalDate.now().getYear(), 1, 1);
 	        LocalDate dAndalucia = LocalDate.of(LocalDate.now().getYear(), 2, 28);
@@ -194,18 +209,25 @@ public class Consulta_2 {
 			}
 		}
 		
-		/*Metodo de generación de un entero de la diferencia entre dias*/
+		/*Metodo de generaciÃ³n de un entero de la diferencia entre dias*/
 		private static int generarFecha (LocalDate fechaInicial, LocalDate fecha) {
 			int newFecha = (int) ChronoUnit.DAYS.between(fechaInicial, fecha);
 			return newFecha;
 		}
 		
-		/*Metodo de generación de una fecha del entero de la posicion*/
+		/*Metodo de generaciÃ³n de una fecha del entero de la posicion*/
 		private static LocalDate generarFecha (LocalDate fechaInicial, int fecha) {
 				return fechaInicial.plusDays(fecha);
 		}
 
 		/*Modulo de registro*/
+		private static void registroInicial(ArrayList <Persona> bolsaInicialClientes) {
+			for(int i=0;i<bolsaInicialClientes.size();i++) {
+				int randomEspecialista=(int)Math.floor((int)registroEspecialistas.length*Math.random());
+				String randomEspecialidad=registroEspecialistas[randomEspecialista].especialidades[(int)Math.floor((int)registroEspecialistas[randomEspecialista].especialidades.length*Math.random())];
+				registroPaciente(bolsaInicialClientes.get(i),randomEspecialista,randomEspecialidad);
+			}
+		}
 		/*Metodo de registro de pacientes*/
 		private static int registroPaciente(Persona persona, int idEspecialista, String especialidades) {
 				Paciente registroCliente = new Paciente(persona, idEspecialista, especialidades);
@@ -240,7 +262,7 @@ public class Consulta_2 {
 			registroVisitas.add(visita);
 		}
 
-		/*Metodo de comprobación de dia festivo o libre*/
+		/*Metodo de comprobaciÃ³n de dia festivo o libre*/
 		public static boolean diaLibre(Profesional registroEspecialista, LocalDate fechaInicial, int fecha) {
             LocalDate dia = fechaInicial.plusDays(fecha-1);
             int diaSem=dia.getDayOfWeek().ordinal();
@@ -258,7 +280,7 @@ public class Consulta_2 {
 					System.out.printf(registroVisitas.get(i).toString()+"\n");
 				}
 			} else {
-				System.out.println("El registro de visitas está vacío.");
+				System.out.println("El registro de visitas estÃ¡ vacÃ­o.");
 			}
 		}
 		
@@ -268,7 +290,55 @@ public class Consulta_2 {
 					System.out.println(registroEspecialistas[i].toString());
 				}
 			} else {
-				System.out.println("El registro de especialistas está vacío.");
+				System.out.println("El registro de especialistas estÃ¡ vacÃ­o.");
 			}
+		}
+		
+		private static void imprimirClientes() {
+			if(!(registroPacientes.size()==0)) {
+				for(int i=0; i<registroPacientes.size();i++) {
+					System.out.println(registroPacientes.get(i).toString());
+				}
+			} else {
+				System.out.println("El registro de especialistas estÃ¡ vacÃ­o.");
+			}
+		}
+		private static void imprimirFacturacion(LocalDate fechaFinal) {
+			if (!(registroVisitas.size()==0)) {
+				DateTimeFormatter shortFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		    	double efectivo = 0;
+		    	double tarjeta = 0;
+		    	double transferencia = 0;
+				for (int i = 0; i<registroVisitas.size(); i++) {
+			    	int idCliente = registroVisitas.get(i).idPaciente;
+			    		if(registroPacientes.get(idCliente).formaPago.equalsIgnoreCase("efectivo")) {
+			    			efectivo+=sumTarifa(registroVisitas.get(i));
+			    		}
+			    		else if (registroPacientes.get(idCliente).formaPago.equalsIgnoreCase("tarjeta")) {
+			    			tarjeta+=sumTarifa(registroVisitas.get(i));
+			    		} else {
+			    			transferencia+=sumTarifa(registroVisitas.get(i));
+			    		}
+			    }
+				System.out.println("FACTURACION:\t"+String.format("%-10s","(Periodo "+fechaInicial.format(shortFormat)+" - "+fechaFinal.format(shortFormat)+")"));
+				separador();
+				System.out.println(String.format("%-44s","Efectivo:")+String.format("%,.2f", efectivo)+"â‚¬");
+		    	System.out.println(String.format("%-44s","Tarjeta:")+String.format("%,.2f", tarjeta)+"â‚¬");
+		    	System.out.println(String.format("%-44s","Transferencia:")+String.format("%,.2f", transferencia)+"â‚¬");
+		    	separador();
+		    	System.out.println(String.format("%-44s", "TOTAL:")+String.format("%,.2f", efectivo+tarjeta+transferencia)+"â‚¬");
+			} else {
+				System.out.println("Aun no hay datos de generados. Seleccione la opcion 'Generacion de consultas' del menu antes realizar esta accion.");
+			}
+		}
+		public static double sumTarifa (Visita registroVisita) {
+			double cobroUrgencia = 1.20;
+			double sumTarifa = 0;
+			if(!(registroVisita.urgencia.equalsIgnoreCase("si"))) {
+				sumTarifa+=registroVisita.tarifa;
+			} else {
+				sumTarifa+=(registroVisita.tarifa)*cobroUrgencia;
+			}
+			return sumTarifa;
 		}
 }

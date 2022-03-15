@@ -12,6 +12,7 @@ public class Visita {
 	protected int idPaciente;
 	protected LocalDate fecha;
 	protected String formaPago;
+	protected double [] listaTarifas = {60.00,65.25};
 	private int probUrgencia=48;//Para cambiar la probabilidad de urgencia.
 	
 	public Visita(Paciente paciente, LocalDate fecha) {
@@ -28,13 +29,12 @@ public class Visita {
 	@Override
 	public String toString() {
 		DateTimeFormatter shortFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		return "tarifa=" + tarifa + "€,\t urgencia=" + urgencia + ",\t idEspecialista=" + idEspecialista
+		return "tarifa=" + tarifa + "â‚¬,\t urgencia=" + urgencia + ",\t idEspecialista=" + idEspecialista
 				+ ",\t especialidad=" + especialidad + ",\t idPaciente=" + idPaciente + ",\t fecha=" + fecha.format(shortFormat) + ", formaPago="
 				+ formaPago + "]";
 	}
 
 	public double generarTarifa(int indice) {
-		double [] listaTarifas = {60.00,65.25};
 		return listaTarifas[indice];
 	}
 	

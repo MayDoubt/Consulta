@@ -14,7 +14,7 @@ public class Persona {
 	protected String dni;
 	protected String direccion;
 	protected String telefono;
-	protected String [] listaEspecialidades = {"HomeopatÌa", "Quiropraxia"};
+	protected String [] listaEspecialidades = {"Homeopat√≠a", "Quiropraxia"};
 
 	public Persona() {
 		this.genero = generarGenero();
@@ -148,11 +148,11 @@ public class Persona {
 	public String generarNombre() {
 		//Metodo para una vez generado el genero, generar un nombre femenino o masculino
 		if(this.genero.equalsIgnoreCase("Hombre")) {
-			String [] listaNombresHombres = {"Tom·s","Fausto","Pablo","Florencio","Julio","AnÌbal","Feliciano","Fernando","Antonio","Mario","Javier","Mauricio","Eustaquio","Leopoldo","Carlos","Manolo","Leandro","Jaime","Hector","Manuel","Alejandro","Sandro","Pepe","Jos√©","Marcelo","Jorge","Pascual","Reinaldo","Cayetano","Daniel"};
+			String [] listaNombresHombres = {"Tom√°s","Fausto","Pablo","Florencio","Julio","An√≠bal","Feliciano","Fernando","Antonio","Mario","Javier","Mauricio","Eustaquio","Leopoldo","Carlos","Manolo","Leandro","Jaime","Hector","Manuel","Alejandro","Sandro","Pepe","Jos√É¬©","Marcelo","Jorge","Pascual","Reinaldo","Cayetano","Daniel"};
 			int nombre = (int)Math.floor((int)(listaNombresHombres.length)*Math.random());	
 			return listaNombresHombres[nombre];
 		}else {
-			String [] listaNombresMujeres = {"Cristina","Luz","Maria","Luciana","Mercedes","InÈs","Soraya","Marina","Salma","Beatriz","Soledad","Consuelo","Martina","Luisa","Silvia","Antonia","Paula","Blanca","Aida","Mariela","Justina","Andrea","Sandra","Nadia","Rosario","Eugenia","Purita","Elvira","Ana","Eva"};		
+			String [] listaNombresMujeres = {"Cristina","Luz","Maria","Luciana","Mercedes","In√©s","Soraya","Marina","Salma","Beatriz","Soledad","Consuelo","Martina","Luisa","Silvia","Antonia","Paula","Blanca","Aida","Mariela","Justina","Andrea","Sandra","Nadia","Rosario","Eugenia","Purita","Elvira","Ana","Eva"};		
 			int nombre = (int)Math.floor((int)(listaNombresMujeres.length)*Math.random());
 			return listaNombresMujeres[nombre];
 		}
@@ -173,7 +173,7 @@ public class Persona {
 	}
 	public String generarGenero() {
 		String [] generos = {"Hombre", "Mujer"};
-		int randomGen = ((int)Math.floor((int)45*Math.random())<=45)?0:1;
+		int randomGen = ((int)Math.floor((int)101*Math.random())<=45)?0:1;
 		return generos[randomGen];
 	}
 	public String generarDni() {

@@ -100,9 +100,9 @@ public class Profesional extends Persona {
 			return Special;
 		}
 	}
-	/*Este metodo est· por si se quiere randomizar los dias libres de cada especialista*/
+	/*Este metodo est√° por si se quiere randomizar los dias libres de cada especialista*/
 	public int generarDiaLibre() {
-		int Dia = 5;
+		int Dia = 4;
 		return Dia;
 	}
 	
