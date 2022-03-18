@@ -1,21 +1,23 @@
 package _CONSULTA;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class Profesional extends Persona {
-	
+
 	private static int contador = 0;
 	protected int idEspecialista;
 	protected String[] especialidades;
 	protected int diaLibre;
-	
+	protected String[] listaEspecialidades = { "Homeopatia", "Quiropraxia" };
+
 	public Profesional(int nEspecialidades) {
 		super();
-		this.idEspecialista=contador++;
-		this.especialidades=generarEspecialidad(super.listaEspecialidades, nEspecialidades);
-		this.diaLibre=generarDiaLibre();
+		this.idEspecialista = contador++;
+		this.especialidades = generarEspecialidad(nEspecialidades);
+		this.diaLibre = generarDiaLibre();
 	}
-	
+
 	/**
 	 * @return the idEspecialista
 	 */
@@ -58,18 +60,27 @@ public class Profesional extends Persona {
 		this.diaLibre = diaLibre;
 	}
 
+	/**
+	 * @return the listaEspecialidades
+	 */
+	public String[] getListaEspecialidades() {
+		return listaEspecialidades;
+	}
+
 	@Override
 	public String toString() {
-		String [] diasLibres= {"Lunes","Martes","Miercoles","Jueves","Viernes"};
-		if(especialidades.length==1) {
-			return "Profesional: IdEspecialista=" + idEspecialista + "\t Nombre=" +String.format("%-15s",this.nombre)+ "\t Especialidad=" 
-					+ String.format("%-20s",especialidades[0]) + "\t DiaLibre="+ diasLibres[diaLibre];
-		}else {
-			return "Profesional: IdEspecialista=" + idEspecialista + "\t Nombre=" +String.format("%-15s",this.nombre)+ "\t Especialidad=" 
-					+ especialidades[0] +" y "+ especialidades[1] + "\t DiaLibre="+ diasLibres[diaLibre];
+		String[] diasLibres = { "Lunes", "Martes", "Miercoles", "Jueves", "Viernes" };
+		if (especialidades.length == 1) {
+			return "Profesional: IdEspecialista=" + idEspecialista + "\t Nombre=" + String.format("%-15s", this.nombre)
+					+ "\t Especialidad=" + String.format("%-20s", especialidades[0]) + "\t DiaLibre="
+					+ diasLibres[diaLibre];
+		} else {
+			return "Profesional: IdEspecialista=" + idEspecialista + "\t Nombre=" + String.format("%-15s", this.nombre)
+					+ "\t Especialidad=" + especialidades[0] + " y " + especialidades[1] + "\t DiaLibre="
+					+ diasLibres[diaLibre];
 		}
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -90,20 +101,37 @@ public class Profesional extends Persona {
 		return idEspecialista == other.idEspecialista;
 	}
 
-	public String[] generarEspecialidad(String[] listaEspecialidades, int nEspecialidades) {
-		if(nEspecialidades==2) {
+	public String[] generarEspecialidad(int nEspecialidades) {
+		if (nEspecialidades == 2) {
 			return listaEspecialidades;
-		}else {
+		} else {
 			String[] Special = new String[1];
-			int Especialidad = (int)Math.floor((int)(listaEspecialidades.length)*Math.random());
+			int Especialidad = (int) Math.floor((int) (listaEspecialidades.length) * Math.random());
 			Special[0] = listaEspecialidades[Especialidad];
 			return Special;
 		}
 	}
-	/*Este metodo está por si se quiere randomizar los dias libres de cada especialista*/
+
+	/* Este metodo randomiza los dias libres de cada especialista */
 	public int generarDiaLibre() {
-		int Dia = 4;
-		return Dia;
+		int dia;
+		if(this.idEspecialista<4) {
+			dia = (int) Math.floor((int) 5 * Math.random());
+		} else {
+			dia=4;
+		}
+		return dia;
 	}
-	
+
+	/* Metodo de comprobaci�n de dia festivo o libre */
+	public boolean esDiaLibre(LocalDate fechaInicial, int fecha) {
+		LocalDate dia = fechaInicial.plusDays(fecha);
+		int diaSem = dia.getDayOfWeek().ordinal();
+		if (this.diaLibre == diaSem || diaSem > 4) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 }
