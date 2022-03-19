@@ -1,5 +1,5 @@
-/.settings
-/bin
-.classpath
-.pmd
-.project
+/.nbproject
+.manifest
+.build
+/build/
+/bin/
