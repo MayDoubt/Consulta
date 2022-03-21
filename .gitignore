@@ -1,5 +1,11 @@
+#Archivos de NetBeans
 /.nbproject
+/build/
 .manifest
 .build
-/build/
-/bin/
+.DS_Store
+#Archivos de Eclipse
+/bin
+.classpath
+.project
+.settings
