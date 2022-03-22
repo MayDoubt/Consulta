@@ -162,27 +162,31 @@ public class Persona implements Comparable<Persona> {
 	}
 
 	@Override
-	public int compareTo(Persona o) {//TODO compare fechas
+	public int compareTo(Persona o) {
 
 		int resultado = 0;
-		if (o.fNacimiento.compareTo(this.fNacimiento)==1) {
-			resultado = -1;
-		} else if (o.fNacimiento.compareTo(this.fNacimiento)==-1) {
+		if (this.fNacimiento.compareTo(o.fNacimiento)>0) {
 			resultado = 1;
-		}
-		return resultado;
-	}
-
-	public int compareToFechas(LocalDate other) { //TODO darle una vuelta
-		int result = 0;
-		if (this.fNacimiento.isLeapYear()) {// Controla que el año sea bisiesto
-			if (this.fNacimiento.getDayOfYear() > other.getDayOfYear()) {
-				result = -1;
-			} else if (this.fNacimiento.getDayOfYear() > other.getDayOfYear()) {
-				result = 1;
+		} else if (this.fNacimiento.compareTo(o.fNacimiento)<0) {
+			resultado = -1;
+		}else {
+	
+			if (this.apellidos.compareToIgnoreCase(o.apellidos)>0) {
+				resultado = -1;
+			} else if (this.apellidos.compareToIgnoreCase(o.apellidos)<0) {
+				resultado = 1;
+			}else {
+				resultado=0;
+				if (this.nombre.compareToIgnoreCase(o.nombre)>0) {
+					resultado = -1;
+				} else if (this.nombre.compareToIgnoreCase(o.nombre)<0) {
+					resultado = 1;
+				}else {
+					resultado=0;
+				}
 			}
 		}
-		return result;
+		return resultado;
 	}
 
 	private String generarNombre() {
